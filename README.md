@@ -6,7 +6,7 @@ just give your wrap ypur component with the SingularComponent and give it a sing
 
 here is a component (using semantic ui react) from the example project: 
 
-class SingularSearch extends Component{
+```class SingularSearch extends Component{
 
     constructor(props){
         super(props);
@@ -25,7 +25,7 @@ class SingularSearch extends Component{
             </Ref>
         </SingularComponent>;
     }
-}
+}```
 
 i will render the SingularSearch component twice once with a singularPriority of 1 and once with a singularPriority of 2.
 while i render both we will only see the instance with a priority of 2, but i will unmount the higher priority instance the component will move and change to the position and size of the lower priority instance.
