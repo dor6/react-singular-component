@@ -32,8 +32,8 @@ class SingularSearch extends Component{
 i will render the SingularSearch component twice once with a singularPriority of 1 and once with a singularPriority of 2.
 while i render both we will only see the instance with a priority of 2, but i will unmount the higher priority instance the component will move and change to the position and size of the lower priority instance.
 
-here is a gif of the example with the component above: https://ibb.co/iGNeZS
-
+here is a gif of the example with the component above:
+![alt text](https://image.ibb.co/jJ5Non/example.gif)
 
 please note this is only the start of the this project there is a lot to add.
 you can download and open the example rar wich contains an example project with the component.
