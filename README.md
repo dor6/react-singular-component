@@ -6,7 +6,7 @@ just give your wrap ypur component with the SingularComponent and give it a sing
 
 here is a component (using semantic ui react) from the example project: 
 
-```
+```react
 class SingularSearch extends Component{
 
     constructor(props){
