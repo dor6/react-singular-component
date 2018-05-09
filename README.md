@@ -36,6 +36,7 @@ here is a gif of the example with the component above:
 ![alt text](https://image.ibb.co/jJ5Non/example.gif)
 
 please note this is only the start of the this project there is a lot to add.
+this is a concept i want to push forward and needs work.
 you can download and open the example rar wich contains an example project with the component.
 
 the first thing that needs to be done is to turn this component into a proper npm package (i never did it before so help whould be nice)
