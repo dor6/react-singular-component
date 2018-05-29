@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import {Children, Component} from 'react';
-import {findDOMNode} from 'react-dom';
+import ReactDOM, {findDOMNode} from 'react-dom';
 
 
 
@@ -115,7 +115,15 @@ class SingularComponent extends Component{
         const lastRect = getLastRect(singularKey);
 
         if(lastRect){
-            const animationElement = createAnimationElement(this.element);
+            let animationFromElement = this.element;
+            if(this.props.customTransitionElement) {
+                let div = document.createElement("div");
+                ReactDOM.render(this.props.customTransitionElement, div);
+                if(div.childNodes.length > 0) {
+                    animationFromElement = div.childNodes[0];
+                }
+            }
+            const animationElement = createAnimationElement(animationFromElement);
 
             this.element.style.opacity = 0;
             animateElement(animationElement, lastRect, this.element, animationDuration, () => {
@@ -166,7 +174,8 @@ SingularComponent.propTypes = {
     singularKey: PropTypes.string.isRequired,
     singularPriority: PropTypes.number.isRequired,
     animationDuration: PropTypes.number,
-    onAnimationComplete: PropTypes.func
+    onAnimationComplete: PropTypes.func,
+    customTransitionElement: PropTypes.node
 };
 
 SingularComponent.defaultProps = {
