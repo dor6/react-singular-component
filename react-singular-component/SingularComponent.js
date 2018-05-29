@@ -127,6 +127,8 @@ class SingularComponent extends Component{
 
             this.element.style.opacity = 0;
             const easing = this.props.easing || EasingFunctionsExtension.linear;
+            
+            this.props.onAnimationBegin && this.props.onAnimationBegin();
             animateElement(animationElement, easing, lastRect, this.element, animationDuration, () => {
                 animationElement.remove();
                 if(this.element){
@@ -175,6 +177,7 @@ SingularComponent.propTypes = {
     singularKey: PropTypes.string.isRequired,
     singularPriority: PropTypes.number.isRequired,
     animationDuration: PropTypes.number,
+    onAnimationBegin: PropTypes.func,
     onAnimationComplete: PropTypes.func,
     customTransitionElement: PropTypes.node,
     easing: PropTypes.func,

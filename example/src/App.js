@@ -19,6 +19,7 @@ class SingularSearch extends Component{
         const {singularPriority, style, value, onChange} = this.props;
 
         return <SingularComponent 
+            onAnimationBegin={() => {console.log("start!")}}
             easing={EasingFunctions.easeOutCubic}
             customTransitionElement={<div style={{background: "red", padding: "15px"}}>cool</div>} 
             singularKey="SingleInput" 
