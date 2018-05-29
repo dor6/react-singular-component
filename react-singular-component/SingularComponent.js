@@ -124,6 +124,7 @@ class SingularComponent extends Component{
                     this.element.style.opacity = '';
                     setLastRect(singularKey, this.element.getBoundingClientRect());
                 }
+                this.props.onAnimationComplete && this.props.onAnimationComplete();
             });
         }
     }
@@ -164,7 +165,8 @@ class SingularComponent extends Component{
 SingularComponent.propTypes = {
     singularKey: PropTypes.string.isRequired,
     singularPriority: PropTypes.number.isRequired,
-    animationDuration: PropTypes.number
+    animationDuration: PropTypes.number,
+    onAnimationComplete: PropTypes.func
 };
 
 SingularComponent.defaultProps = {

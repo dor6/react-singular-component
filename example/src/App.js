@@ -18,7 +18,10 @@ class SingularSearch extends Component{
     render(){
         const {singularPriority, style, value, onChange} = this.props;
 
-        return <SingularComponent singularKey="SingleInput" singularPriority={singularPriority}>
+        return <SingularComponent 
+            singularKey="SingleInput" 
+            singularPriority={singularPriority}
+            onAnimationComplete={() => {console.log("done!")}}>
             <Ref innerRef={this.handleRef}>
                 <Input icon="search" value={value} style={style} onChange={onChange} />
             </Ref>
