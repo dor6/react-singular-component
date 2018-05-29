@@ -3,7 +3,7 @@
   "author": "Dor Gross 6",
   "version": "6.6.6",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run autolink && react-scripts start",
     "build": "npm run autolink && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
