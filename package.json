@@ -1,0 +1,12 @@
+{
+  "name": "react-singular-component-runner",
+  "author": "Dor Gross 6",
+  "version": "6.6.6",
+  "scripts": {
+    "start": "cd example && npm start",
+    "link": "zelda"
+  },
+  "devDependencies": {
+    "zelda": "*"
+  }
+}

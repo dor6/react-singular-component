@@ -1,0 +1,13 @@
+{
+  "name": "react-singular-component",
+  "author": "Dor Gross 6",
+  "version": "6.6.6",
+  "main": "SingularComponent.js",
+  "devDependencies": {
+    "prop-types": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-scripts": "1.1.4",
+    "semantic-ui-react": "^0.79.1"
+  }
+}
