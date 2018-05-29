@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {Children, Component} from 'react';
 import ReactDOM, {findDOMNode} from 'react-dom';
-
+import EasingFunctionsExtension from "./easings";
 
 
 const keyToComponentsObject = {};
@@ -64,7 +64,7 @@ const createAnimationElement = (element) => {
     return animationElement;
 };
 
-const animateElement = (animationElement, startingRect, targetElement, duration, onFinish) => {
+const animateElement = (animationElement, easing, startingRect, targetElement, duration, onFinish) => {
     let startingTimestamp;
 
     const step = (timestamp) => {
@@ -74,7 +74,7 @@ const animateElement = (animationElement, startingRect, targetElement, duration,
         if(progress < duration){
             requestAnimationFrame(step);
 
-            const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * (progress/duration);
+            const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
             const targetRect = targetElement.getBoundingClientRect();
 
             const scaleX = valueFormula((startingRect.width/targetRect.width), 1);
@@ -126,7 +126,8 @@ class SingularComponent extends Component{
             const animationElement = createAnimationElement(animationFromElement);
 
             this.element.style.opacity = 0;
-            animateElement(animationElement, lastRect, this.element, animationDuration, () => {
+            const easing = this.props.easing || EasingFunctionsExtension.linear;
+            animateElement(animationElement, easing, lastRect, this.element, animationDuration, () => {
                 animationElement.remove();
                 if(this.element){
                     this.element.style.opacity = '';
@@ -175,7 +176,8 @@ SingularComponent.propTypes = {
     singularPriority: PropTypes.number.isRequired,
     animationDuration: PropTypes.number,
     onAnimationComplete: PropTypes.func,
-    customTransitionElement: PropTypes.node
+    customTransitionElement: PropTypes.node,
+    easing: PropTypes.func,
 };
 
 SingularComponent.defaultProps = {
@@ -183,3 +185,4 @@ SingularComponent.defaultProps = {
 };
 
 export default SingularComponent;
+export let EasingFunctions = EasingFunctionsExtension;
