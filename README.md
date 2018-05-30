@@ -12,7 +12,7 @@ just give your wrap ypur component with the SingularComponent and give it a sing
 
 ## Usage
 
-here is a component (using semantic ui react) from the example project: 
+Here is a component (using semantic ui react) from the example project: 
 
 ```jsx
 import SingularComponent from 'react-singular-component';
@@ -68,7 +68,14 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td>Number</td>
           <td></td>
           <td>Required</td>
-          <td>The library will keep the  one with the lower priority</td>
+          <td>The library will keep only the one with the lower priority for every common singularKey</td>
+        </tr>
+        <tr>
+          <td>children</td>
+          <td>React element</td>
+          <td></td>
+          <td></td>
+          <td>The element itself you want to keep single</td>
         </tr>
         <tr>
           <td>animationDuration</td>
@@ -122,5 +129,4 @@ and you're ready to go and make whatever changes you have in mind
 
 
 Please note this is only the start of the this project there is a lot to add.
-this is a concept i want to push forward and needs work.
-you can download and open the example rar wich contains an example project with the component.
+This is a concept I want to push forward and needs work.
