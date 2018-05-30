@@ -110,7 +110,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td>(Number) => Number</td>
           <td>EasingFunctions.Linear</td>
           <td></td>
-          <td>Given the progress, return the easing progress value. See here: https://easings.net/ . You can import easing functions like that import SingularComponent, {EasingFunctions} from 'react-singular-component'; EasingFunctions.easeOutCubic or make your own function</td>
+          <td>Given the progress, return the easing progress value. See here: https://easings.net/ . You can import easing functions like that: ```import SingularComponent, {EasingFunctions} from 'react-singular-component'; EasingFunctions.easeOutCubic``` or make your own function</td>
         </tr>
     </tbody>
 </table>
