@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Menu, Input, Ref, Grid, Header, Card, Button} from 'semantic-ui-react';
 
-import SingularComponent from 'react-singular-component';
+import SingularComponent, {EasingFunctions} from 'react-singular-component';
 import './stylesheets/semantic/semantic.css';
 
 
@@ -18,7 +18,13 @@ class SingularSearch extends Component{
     render(){
         const {singularPriority, style, value, onChange} = this.props;
 
-        return <SingularComponent singularKey="SingleInput" singularPriority={singularPriority}>
+        return <SingularComponent 
+            onAnimationBegin={() => {console.log("start!")}}
+            easing={EasingFunctions.easeOutCubic}
+            customTransitionElement={<div style={{background: "red", padding: "15px"}}>cool</div>} 
+            singularKey="SingleInput" 
+            singularPriority={singularPriority}
+            onAnimationComplete={() => {console.log("done!")}}>
             <Ref innerRef={this.handleRef}>
                 <Input icon="search" value={value} style={style} onChange={onChange} />
             </Ref>
