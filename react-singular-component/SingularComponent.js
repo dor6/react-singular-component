@@ -37,10 +37,16 @@ const unregisterComponent = (component) => {
     }
 };
 
+const setLastSnapshot = (key, element) => {
+    getComponentsObject(key).lastRect = element.getBoundingClientRect();
+    getComponentsObject(key).lastStyle = Object.assign({},getComputedStyle(element));
+}
 
 const setLastRect = (key, rect) => getComponentsObject(key).lastRect = rect;
 
 const getLastRect = (key) => getComponentsObject(key).lastRect;
+
+const getLastStyle = (key) => getComponentsObject(key).lastStyle;
 
 
 const shouldShow = (component) => {
@@ -64,6 +70,47 @@ const createAnimationElement = (element) => {
     return animationElement;
 };
 
+
+
+const animateElement = (animationElement, easing, startingRect, startingStyle, targetElement, duration, onFinish) => {
+    const stylesToAnimate = ['width', 'height', 'fontSize'];
+    let startingTimestamp;
+
+    const step = (timestamp) => {
+        startingTimestamp = startingTimestamp ? startingTimestamp : timestamp;
+        const progress = timestamp - startingTimestamp;
+
+        if(progress < duration){
+            requestAnimationFrame(step);
+
+            const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
+            const targetRect = targetElement.getBoundingClientRect();
+            const targetStyles = getComputedStyle(targetElement);
+
+            const translateX = valueFormula((startingRect.left - targetRect.left), 0);
+            const translateY = valueFormula((startingRect.top - targetRect.top), 0);
+
+
+            animationElement.style.left = `${targetRect.left}px`;
+            animationElement.style.top = `${targetRect.top}px`;
+            animationElement.style.transform = `translate(${translateX}px,${translateY}px)`;
+            
+            stylesToAnimate.forEach((style) => {
+                const value = valueFormula(parseInt(startingStyle[style]), parseInt(targetStyles[style]));
+                animationElement.style[style] = `${value}px`;
+            });
+
+        }
+        else{
+            onFinish();
+        }
+
+    };
+
+    requestAnimationFrame(step);
+};
+
+/*
 const animateElement = (animationElement, easing, startingRect, targetElement, duration, onFinish) => {
     let startingTimestamp;
 
@@ -98,6 +145,8 @@ const animateElement = (animationElement, easing, startingRect, targetElement, d
     requestAnimationFrame(step);
 };
 
+*/
+
 const rectsAreTheSame = (rect1,rect2) => {
     for(let prop in rect1){
         if(rect1[prop] != rect2[prop]){
@@ -128,21 +177,20 @@ class SingularComponent extends Component{
             this.element.style.opacity = 0;
             const easing = this.props.easing || EasingFunctionsExtension.linear;
             
-            this.props.onAnimationBegin && this.props.onAnimationBegin();
-            animateElement(animationElement, easing, lastRect, this.element, animationDuration, () => {
+            this.props.onAnimationBegin();
+            animateElement(animationElement, easing, lastRect, getLastStyle(singularKey), this.element, animationDuration, () => {
                 animationElement.remove();
                 if(this.element){
                     this.element.style.opacity = '';
-                    setLastRect(singularKey, this.element.getBoundingClientRect());
+                    setLastSnapshot(singularKey, this.element);
                 }
-                this.props.onAnimationComplete && this.props.onAnimationComplete();
+                this.props.onAnimationComplete();
             });
         }
     }
 
     getSnapshotBeforeUpdate(){
-        if(this.element)    setLastRect(this.props.singularKey, this.element.getBoundingClientRect());
-
+        if(this.element)    setLastSnapshot(this.props.singularKey, this.element);
         return null;
     }
 
@@ -165,7 +213,7 @@ class SingularComponent extends Component{
     }
 
     componentWillUnmount(){
-        if(this.element)    setLastRect(this.props.singularKey, this.element.getBoundingClientRect());
+        if(this.element)    setLastSnapshot(this.props.singularKey, this.element);
         unregisterComponent(this);
     }
 
@@ -186,7 +234,9 @@ SingularComponent.propTypes = {
 };
 
 SingularComponent.defaultProps = {
-    animationDuration: 300
+    animationDuration: 500,
+    onAnimationBegin: () => {},
+    onAnimationComplete: () => {}
 };
 
 export default SingularComponent;

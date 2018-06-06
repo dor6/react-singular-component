@@ -19,12 +19,9 @@ class SingularSearch extends Component{
         const {singularPriority, style, value, onChange} = this.props;
 
         return <SingularComponent 
-            onAnimationBegin={() => {console.log("start!")}}
             easing={EasingFunctions.easeOutCubic}
-            customTransitionElement={<div style={{background: "red", padding: "15px"}}>cool</div>} 
             singularKey="SingleInput" 
-            singularPriority={singularPriority}
-            onAnimationComplete={() => {console.log("done!")}}>
+            singularPriority={singularPriority}>
             <Ref innerRef={this.handleRef}>
                 <Input icon="search" value={value} style={style} onChange={onChange} />
             </Ref>
@@ -83,11 +80,6 @@ class App extends Component {
 
         this.onInputChange = this.onInputChange.bind(this);
         this.toggleNote = this.toggleNote.bind(this);
-
-
-        setInterval(() => {
-            this.toggleNote(Math.floor(Math.random() * this.state.notes.length))
-        }, 500);
     }
 
 
