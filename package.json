@@ -1,7 +1,7 @@
 {
   "name": "react-singular-component-runner",
   "author": "Dor Gross 6",
-  "version": "6.6.7",
+  "version": "6.6.8",
   "scripts": {
     "start": "cd example && npm start"
   }

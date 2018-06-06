@@ -1,7 +1,7 @@
 {
   "name": "react-singular-component-example",
   "author": "Dor Gross 6",
-  "version": "6.6.7",
+  "version": "6.6.8",
   "scripts": {
     "start": "npm run autolink && react-scripts start",
     "build": "npm run autolink && react-scripts build",
