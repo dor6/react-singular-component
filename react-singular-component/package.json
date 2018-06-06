@@ -1,7 +1,7 @@
 {
   "name": "react-singular-component",
   "author": "Dor Gross 6",
-  "version": "6.6.7",
+  "version": "6.6.8",
   "main": "SingularComponent.js",
   "devDependencies": {
     "prop-types": "^15.6.1",
