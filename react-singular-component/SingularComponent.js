@@ -140,8 +140,10 @@ class SingularComponent extends Component{
         }
     }
 
-    componentWillUpdate(){
-       if(this.element)    setLastRect(this.props.singularKey, this.element.getBoundingClientRect());
+    getSnapshotBeforeUpdate(){
+        if(this.element)    setLastRect(this.props.singularKey, this.element.getBoundingClientRect());
+
+        return null;
     }
 
     componentDidUpdate(){
