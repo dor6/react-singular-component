@@ -122,6 +122,35 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td></td>
           <td>Given the progress, return the easing progress value. See here: https://easings.net/ . You can import easing functions like that: ```import SingularComponent, {EasingFunctions} from 'react-singular-component'; EasingFunctions.easeOutCubic``` or make your own function</td>
         </tr>
+         <tr>
+          <td>useStyleAnimation</td>
+          <td>Boolean</td>
+          <td>false</td>
+          <td></td>
+          <td>when true animation will use width, height and fontSize to animate dimensions, instead of transform: scale. this can be useful in a lot of cases, for example when height and width ratio changes</td>
+        </tr>
+         <tr>
+          <td>customAnimationHandlers</td>
+          <td>['width','height','fontSize', (element, valueFormula, startSnapshot, targetSnapshot) => void]</td>
+          <td></td>
+          <td></td>
+          <td>choose your own animation (which will be added to the position animation), provide your array of changes in addition to existing style animation. provide an array of supported styles you want to animate, in addition to your own custom function to animate yet unimplemented styles or more advance animation.
+    customAnimationHandler get as arguments:
+              <br/>
+              - element: the animated element to change.
+              <br/>
+              - valueFormula: (startValue(number), endValue(number)) => currentValue(number), use the targetSnapshot and endSnapshot to choose calculate the values of the styles you want to animate 
+              <br/>
+              - startSnapshot: contains rect(getBoundingClientRect) and style(getComputedStyle) of element before the animation started
+              <br/>
+              - targetSnapshot: same as startSnapshot but of the element end state of the animation
+              <br/>
+              <br/>
+              ~~~snapshots explained~~~
+              <br/>
+              startSnapshot belongs to the instance of the component we animating from and target snapshot belongs to the instace of the component we are animating to
+            </td>
+        </tr>
     </tbody>
 </table>
 
