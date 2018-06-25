@@ -39,16 +39,16 @@ const unregisterComponent = (component) => {
 };
 
 const setLastSnapshot = (key, element) => getComponentsObject(key).lastSnapshot = createSnapshot(element);
-
 const getLastSnapshot = (key) => getComponentsObject(key).lastSnapshot;
+
+const setLastAnimation = (key, animation) => getComponentsObject(key).lastAnimation = animation;
+const getLastAnimation = (key) => getComponentsObject(key).lastAnimation;
 
 
 const shouldShow = (component) => {
     const {singularKey, singularPriority} = component.props;
     return Math.max(...getPriorities(singularKey)) === singularPriority;
 };
-
-
 
 const createSnapshot = (element) => ({
     rect: element.getBoundingClientRect(),
@@ -72,8 +72,7 @@ const createAnimationElement = (element) => {
 
 
 const animateElement = (animationElement, targetElement, startSnapshot, animationHandlers, easing, duration, onFinish) => {
-    const styleAttributesToAnimate = ['width', 'height', 'fontSize'];
-
+    let animationFrame;
     let startingTimestamp;
 
     const step = (timestamp) => {
@@ -81,18 +80,28 @@ const animateElement = (animationElement, targetElement, startSnapshot, animatio
         const progress = timestamp - startingTimestamp;
 
         if(progress < duration){
-            requestAnimationFrame(step);
+            animationFrame = requestAnimationFrame(step);
             const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
 
             animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, createSnapshot(targetElement) ));
         }
         else{
+            animationFrame = undefined;
             onFinish();
         }
 
     };
 
-    requestAnimationFrame(step);
+    animationFrame = requestAnimationFrame(step);
+
+    return {
+        cancel: () => {
+            if(animationFrame){
+                cancelAnimationFrame(animationFrame);
+                onFinish();
+            }
+        }
+    };
 };
 
 const rectsAreTheSame = (rect1,rect2) => {
@@ -139,15 +148,21 @@ class SingularComponent extends Component{
     animateComponent(){
         const {animationDuration, singularKey, easing, onAnimationBegin, onAnimationComplete} = this.props;
         const lastSnapshot = getLastSnapshot(singularKey);
+        const lastAnimation = getLastAnimation(singularKey);
+        
+        if(lastAnimation){
+            lastAnimation.cancel();
+        }
 
         if(lastSnapshot){
+
             const animationElement = this.getAnimationElement();
             const animationHandlers = this.getAnimationHandlers();
             
             this.element.style.opacity = 0;
 
             onAnimationBegin();
-            animateElement(animationElement, this.element, lastSnapshot, animationHandlers, easing, animationDuration, () => {
+            const animation = animateElement(animationElement, this.element, lastSnapshot, animationHandlers, easing, animationDuration, () => {
                 animationElement.remove();
 
                 if(this.element){
@@ -156,6 +171,8 @@ class SingularComponent extends Component{
                 }
                 onAnimationComplete();
             });
+
+            setLastAnimation(singularKey, animation);
         }
     }
 
