@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
-import {Children, Component} from 'react';
+import React, {Children, Component} from 'react';
 import ReactDOM, {findDOMNode} from 'react-dom';
 import EasingFunctionsExtension from "./easings";
+import {createSnapshot} from './createSnapshot';
+import {getStore} from './componentsStore'
 import {StyleHandlers, ClearTransformHandler, PositionHandler, SimpleDimensionHandler} from './animationHandlers';
 
-
-const createSnapshot = (element) => ({
-    rect: element.getBoundingClientRect(),
-    style: Object.assign({},getComputedStyle(element))
-});
 
 const createAnimationElement = (element) => {
     const animationElement = element.cloneNode(true);
@@ -76,61 +73,15 @@ const rectsAreTheSame = (rect1,rect2) => {
 };
 
 
-
-class SingularComponentStore{
-    
-    constructor(){
-        this.components = [];
-    }
-
-    get priorities(){
-        return this.components.map(({props}) => props.singularPriority);
-    }
-}
-
-const singularComponentStores = {};
-
-const getStore = (key) => {
-    if(!singularComponentStores[key]) singularComponentStores[key] = new SingularComponentStore();
-    return singularComponentStores[key];
-};
-
-
-
 class SingularComponent extends Component{
 
     get store(){
         return getStore(this.props.singularKey);
     }
 
-    forceUpdateStoreComponents(){
-        this.store.components.forEach(component => component.forceUpdate());
-    }
-
-    registerToStore(){
-        this.store.components.push(this);
-        this.forceUpdateStoreComponents();
-    }
-
-    unRegisterFromStore(){
-        const index = this.store.components.indexOf(this);
-
-        if(index !== -1){
-            this.store.components.splice(index, 1);
-            this.forceUpdateStoreComponents();
-        }
-    }
-
-    setStoreLastSnapshot(){
-        if(this.element){
-            this.store.lastSnapshot = createSnapshot(this.element);
-        }
-    }
-
     shouldShow(){
         return Math.max(...this.store.priorities) === this.props.singularPriority;
     }
-
 
     getAnimationHandlers(){
         const {useStyleAnimation, customAnimationHandlers} = this.props;
@@ -173,7 +124,7 @@ class SingularComponent extends Component{
 
                 if(this.element){
                     this.element.style.opacity = '';
-                    this.setStoreLastSnapshot();
+                    this.store.takeSnapshot(this);
                 }
                 onAnimationComplete();
             });
@@ -181,7 +132,7 @@ class SingularComponent extends Component{
     }
 
     getSnapshotBeforeUpdate(){
-        this.setStoreLastSnapshot();
+        this.store.takeSnapshot(this);
         return null;
     }
 
@@ -199,12 +150,12 @@ class SingularComponent extends Component{
     }
 
     componentDidMount(){
-        this.registerToStore();
+        this.store.register(this);
     }
 
     componentWillUnmount(){
-        this.setStoreLastSnapshot();
-        this.unRegisterFromStore();
+        this.store.takeSnapshot(this);
+        this.store.unregister(this);
     }
 
     render(){
