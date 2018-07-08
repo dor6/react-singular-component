@@ -1,20 +1,10 @@
 # SingularComponent
 Move your react component around the dom
 
-![alt text](https://image.ibb.co/jJ5Non/example.gif)
-
 Transition from one component to another component seamlessly.
 Use this for better user exprience, helping them understand its the same component.
 Just wrap your components with the SingularComponent, give them the same singularKey, 
 and a singularPriority to choose which one of them to show(higher priority will show the componenet).
-
-### How is it different from react-overdrive
-react-overdrive wait for you to unmount your component and mount your component. 
-Hoping that you will unmount it exactly the same time. 
-Things can get complicated when you have more than 2 components at the same page, or if you can't time the unmounting at the same time.
-SingularComponent will mount and unmount it for you, according to the singularPriority,
-it gives you more control and makes the behaviour clearer.
-
 
 ## Install
 
@@ -160,19 +150,3 @@ while i render both we will only see the instance with a priority of 2, but i wi
         </tr>
     </tbody>
 </table>
-
-
-
-## Contribute
-
-Simply fork and clone
-
-    cd example
-    npm install
-    npm start
-
-and you're ready to go and make whatever changes you have in mind
-
-
-Please note this is only the start of the this project there is a lot to add.
-This is a concept I want to push forward and needs work.

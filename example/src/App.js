@@ -43,7 +43,7 @@ class Note extends Component{
 
     render(){
         const {props} = this;
-        return <SingularComponent singularKey={`note-${props.note.id}`} singularPriority={props.singularPriority}>
+        return <SingularComponent singularKey={`note-${props.note.id}`} singularPriority={props.singularPriority} animationTrigger={props.notesCount}>
             <Card>
                 <Card.Content>
                     <Card.Header>{props.note.header}</Card.Header>
@@ -97,7 +97,7 @@ class App extends Component {
     render() {
 
         const renderNotes = (notes)=>{
-            return notes.map((note) => <Note key={note.id} note={note} singularPriority={1} toggleNote={this.toggleNote} />)
+            return notes.map((note) => <Note key={note.id} notesCount={notes.length} note={note} singularPriority={1} toggleNote={this.toggleNote} />)
         };
 
         return (

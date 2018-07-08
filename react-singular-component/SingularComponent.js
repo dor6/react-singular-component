@@ -42,7 +42,7 @@ const animateElement = (animationElement, targetElement, startSnapshot, animatio
             animationFrame = requestAnimationFrame(step);
             const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
 
-            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, createSnapshot(targetElement) ));
+            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, createSnapshot(targetElement)));
         }
         else{
             animationFrame = undefined;
@@ -61,15 +61,6 @@ const animateElement = (animationElement, targetElement, startSnapshot, animatio
             }
         }
     };
-};
-
-const rectsAreTheSame = (rect1,rect2) => {
-    for(let prop in rect1){
-        if(rect1[prop] != rect2[prop]){
-            return false;
-        }
-    }
-    return true;
 };
 
 
@@ -136,15 +127,14 @@ class SingularComponent extends Component{
         return null;
     }
 
-    componentDidUpdate(){
+    componentDidUpdate(nextProps){
         const element = findDOMNode(this);
 
         if(this.element !== element){
             this.element = element;
-
             if (this.element)   this.animateComponent();
         }
-        else if(this.element && !rectsAreTheSame(this.element.getBoundingClientRect(), this.store.lastSnapshot.rect)){
+        else if(this.element && this.props.animationTrigger !== nextProps.animationTrigger){
             this.animateComponent();
         }
     }
@@ -168,6 +158,7 @@ SingularComponent.propTypes = {
     singularKey: PropTypes.string.isRequired,
     singularPriority: PropTypes.number.isRequired,
     animationDuration: PropTypes.number,
+    animationTrigger: PropTypes.any,
     onAnimationBegin: PropTypes.func,
     onAnimationComplete: PropTypes.func,
     customTransitionElement: PropTypes.node,
@@ -182,7 +173,8 @@ SingularComponent.propTypes = {
 };
 
 SingularComponent.defaultProps = {
-    animationDuration: 500,
+    animationDuration: 300,
+    animationTrigger: 0,
     onAnimationBegin: () => {},
     onAnimationComplete: () => {},
     easing: EasingFunctionsExtension.linear,
