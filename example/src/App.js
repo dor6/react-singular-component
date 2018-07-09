@@ -7,10 +7,6 @@ import './stylesheets/semantic/semantic.css';
 
 class SingularSearch extends Component{
 
-    constructor(props){
-        super(props);
-    }
-
     handleRef(element){
         element.getElementsByTagName('input')[0].focus();
     }
@@ -19,6 +15,7 @@ class SingularSearch extends Component{
         const {singularPriority, style, value, onChange} = this.props;
 
         return <SingularComponent 
+            useStyleAnimation
             easing={EasingFunctions.easeOutCubic}
             singularKey="SingleInput" 
             singularPriority={singularPriority}>

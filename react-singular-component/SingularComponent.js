@@ -5,6 +5,7 @@ import EasingFunctionsExtension from "./easings";
 import {createSnapshot} from './createSnapshot';
 import {getStore} from './componentsStore'
 import {StyleHandlers, ClearTransformHandler, PositionHandler, SimpleDimensionHandler} from './animationHandlers';
+import {requestSmartAnimationFrame, cancelSmartAnimationFrame} from './smartAnimationFrame';
 
 
 const createAnimationElement = (element) => {
@@ -17,46 +18,51 @@ const createAnimationElement = (element) => {
     animationElement.style.marginTop = 0;
     animationElement.style.marginRight = 0;
     animationElement.style.marginBottom = 0;
+    animationElement.style.backfaceVisibility = 'hidden';
 
     document.body.appendChild(animationElement);
     return animationElement;
 };
 
-const createAnimationHandlers = (useCostumeHandlers, customHandlers = ['width', 'height', 'fontSize']) => {
-    if(useCostumeHandlers){
+const createAnimationHandlers = (useCustomeHandlers, customHandlers = ['width', 'height', 'fontSize']) => {
+    if(useCustomeHandlers){
         return [ClearTransformHandler, PositionHandler, ...customHandlers.map((handler) => typeof handler === 'string' ? StyleHandlers[handler] : handler )];
     }
 
     return [ClearTransformHandler, PositionHandler, SimpleDimensionHandler];
 };
 
+
 const animateElement = (animationElement, targetElement, startSnapshot, animationHandlers, easing, duration, onFinish) => {
     let animationFrame;
     let startingTimestamp;
 
-    const step = (timestamp) => {
+
+    const stepRead = () => createSnapshot(targetElement);
+
+    const stepWrite = (timestamp, targetSnapshot) => {
         startingTimestamp = startingTimestamp ? startingTimestamp : timestamp;
         const progress = timestamp - startingTimestamp;
 
         if(progress < duration){
-            animationFrame = requestAnimationFrame(step);
+            animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
             const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
 
-            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, createSnapshot(targetElement)));
+            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, targetSnapshot));
         }
         else{
             animationFrame = undefined;
             onFinish();
         }
-
     };
 
-    animationFrame = requestAnimationFrame(step);
+
+    animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
 
     return {
         cancel: () => {
             if(animationFrame){
-                cancelAnimationFrame(animationFrame);
+                cancelSmartAnimationFrame(animationFrame);
                 onFinish();
             }
         }
@@ -111,12 +117,16 @@ class SingularComponent extends Component{
 
             onAnimationBegin();
             this.store.lastAnimation = animateElement(animationElement, this.element, lastSnapshot, animationHandlers, easing, animationDuration, () => {
-                animationElement.remove();
-
-                if(this.element){
-                    this.element.style.opacity = '';
-                    this.store.takeSnapshot(this);
-                }
+                requestSmartAnimationFrame(
+                    () => {
+                        animationElement.remove();
+                        if(this.element){
+                            this.element.style.opacity = ''; 
+                        }
+                    },
+                    () => this.store.takeSnapshot(this)
+                );
+                
                 onAnimationComplete();
             });
         }
