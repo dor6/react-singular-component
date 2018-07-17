@@ -148,5 +148,12 @@ while i render both we will only see the instance with a priority of 2, but i wi
               startSnapshot belongs to the instance of the component we animating from and target snapshot belongs to the instace of the component we are animating to
             </td>
         </tr>
+        <tr>
+          <td>extraSnapshotStyleAttributes</td>
+          <td>Array of style attributes in camelCase</td>
+          <td>[]</td>
+          <td></td>
+          <td>Add the given style attributes to the style snapshot they will be joined with the customAnimtionHandlers provided by their name ('width', 'fontSize'...)</td>
+        </tr>
     </tbody>
 </table>
