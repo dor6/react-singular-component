@@ -153,7 +153,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td>Array of style attributes in camelCase</td>
           <td>[]</td>
           <td></td>
-          <td>Add the given style attributes to the style snapshot they will be joined with the customAnimtionHandlers provided by their name ('width', 'fontSize'...)</td>
+          <td>Add the given style attributes to the style snapshot they will be joined with the customAnimtionHandlers provided by their name ('width', 'fontSize'...). use this when you make your own customAnimationHandler and the given snapshot isnt enough. ( copying all the styles to the snapshot is to heavy )</td>
         </tr>
     </tbody>
 </table>
