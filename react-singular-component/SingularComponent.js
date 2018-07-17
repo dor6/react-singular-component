@@ -1,91 +1,68 @@
 import PropTypes from 'prop-types';
 import React, {Children, Component} from 'react';
 import ReactDOM, {findDOMNode} from 'react-dom';
-import EasingFunctionsExtension from "./easings";
-import {createSnapshot} from './createSnapshot';
-import {getStore} from './componentsStore'
-import {StyleHandlers, ClearTransformHandler, PositionHandler, SimpleDimensionHandler} from './animationHandlers';
-import {requestSmartAnimationFrame, cancelSmartAnimationFrame} from './smartAnimationFrame';
+
+import {EasingFunctions} from "./subModules/easingFunctions";
+
+import {createSnapshot} from './utils/createSnapshot';
+import {getComponentStore} from './utils/getComponentStore';
+import {createAnimationElement} from './utils/createAnimationElement';
+import {calculateAnimationHandlers} from './utils/calculateAnimationHandlers';
+import {animateSingularComponentElement} from './utils/animateSingularComponentElement';
 
 
-const createAnimationElement = (element) => {
-    const animationElement = element.cloneNode(true);
-
-    animationElement.style.position = 'fixed';
-    animationElement.style.transformOrigin = 'left top';
-    animationElement.style.transition = 'none';
-    animationElement.style.marginLeft = 0;
-    animationElement.style.marginTop = 0;
-    animationElement.style.marginRight = 0;
-    animationElement.style.marginBottom = 0;
-    animationElement.style.backfaceVisibility = 'hidden';
-
-    document.body.appendChild(animationElement);
-    return animationElement;
-};
-
-const createAnimationHandlers = (useCustomeHandlers, customHandlers = ['width', 'height', 'fontSize']) => {
-    if(useCustomeHandlers){
-        return [ClearTransformHandler, PositionHandler, ...customHandlers.map((handler) => typeof handler === 'string' ? StyleHandlers[handler] : handler )];
-    }
-
-    return [ClearTransformHandler, PositionHandler, SimpleDimensionHandler];
-};
-
-
-const animateElement = (animationElement, targetElement, startSnapshot, animationHandlers, easing, duration, onFinish) => {
-    let animationFrame;
-    let startingTimestamp;
-
-
-    const stepRead = () => createSnapshot(targetElement);
-
-    const stepWrite = (timestamp, targetSnapshot) => {
-        startingTimestamp = startingTimestamp ? startingTimestamp : timestamp;
-        const progress = timestamp - startingTimestamp;
-
-        if(progress < duration){
-            animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
-            const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
-
-            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, targetSnapshot));
-        }
-        else{
-            animationFrame = undefined;
-            onFinish();
-        }
-    };
-
-
-    animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
-
-    return {
-        cancel: () => {
-            if(animationFrame){
-                cancelSmartAnimationFrame(animationFrame);
-                onFinish();
-            }
-        }
-    };
-};
-
+const DEFAULT_CUSTOM_ANIMATION_HANDLERS = ['width', 'height', 'fontSize'];
 
 class SingularComponent extends Component{
 
-    get store(){
-        return getStore(this.props.singularKey);
+    constructor(props){
+        super(props);
+        this.takeSnapshot = this.takeSnapshot.bind(this);
+        this.setStoreSnapshot = this.setStoreSnapshot.bind(this);
     }
 
-    shouldShow(){
+    get store(){
+        const {singularKey} = this.props;
+        return getComponentStore(singularKey);
+    }
+
+    get shouldUseCustomAnimationHandlers(){
+        const {useStyleAnimation, customAnimationHandlers} = this.props;
+        return useStyleAnimation || (customAnimationHandlers !== DEFAULT_CUSTOM_ANIMATION_HANDLERS)
+    }
+
+    get animationHandlers(){
+        const {customAnimationHandlers} = this.props;
+        return calculateAnimationHandlers( this.shouldUseCustomAnimationHandlers, customAnimationHandlers );
+    }
+
+    get shouldShow(){
         return Math.max(...this.store.priorities) === this.props.singularPriority;
     }
 
-    getAnimationHandlers(){
-        const {useStyleAnimation, customAnimationHandlers} = this.props;
-        return createAnimationHandlers(useStyleAnimation || customAnimationHandlers, customAnimationHandlers);
+
+    takeSnapshot(){
+        const {extraSnapshotStyleAttributes, customAnimationHandlers} = this.props;
+        
+        let styleAttrsToCopy = [...extraSnapshotStyleAttributes];
+
+        // When Using styleAnimation (which uses the default customAnimationHandler) or customAnimationHandlers,
+        // We want to automaticly add the style handlers mentioned by their name to the snapshot.
+        // for example if the 'width' handler is used than the width attribute will automatically be added.
+        if(this.shouldUseCustomAnimationHandlers){
+            styleAttrsToCopy.push(...customAnimationHandlers.filter((handler) => typeof handler === 'string'));
+        }
+        
+        return createSnapshot(this.element, styleAttrsToCopy);
     }
 
-    getAnimationElement(){
+    setStoreSnapshot(){
+        if(this.element){
+            this.store.lastSnapshot = this.takeSnapshot();
+        }
+    }
+
+    createAnimationElement(){
         const {customTransitionElement} = this.props;
         let animationFromElement = this.element;
 
@@ -104,36 +81,32 @@ class SingularComponent extends Component{
         const {animationDuration, easing, onAnimationBegin, onAnimationComplete} = this.props;
         const {lastAnimation, lastSnapshot} = this.store;
         
-        if(lastAnimation){
-            lastAnimation.cancel();
-        }
+        if(lastAnimation)   lastAnimation.cancel();
 
         if(lastSnapshot){
-
-            const animationElement = this.getAnimationElement();
-            const animationHandlers = this.getAnimationHandlers();
-            
+            const animationElement = this.createAnimationElement();
             this.element.style.opacity = 0;
 
+            const cleanUp = () => {
+                animationElement.remove();
+                if(this.element)    this.element.style.opacity = ''; 
+            };
+
             onAnimationBegin();
-            this.store.lastAnimation = animateElement(animationElement, this.element, lastSnapshot, animationHandlers, easing, animationDuration, () => {
-                requestSmartAnimationFrame(
-                    () => {
-                        animationElement.remove();
-                        if(this.element){
-                            this.element.style.opacity = ''; 
-                        }
-                    },
-                    () => this.store.takeSnapshot(this)
-                );
-                
-                onAnimationComplete();
+
+            this.store.lastAnimation = animateSingularComponentElement( animationElement, this.takeSnapshot, lastSnapshot, this.animationHandlers, easing, animationDuration, { 
+                onFinishRead: this.setStoreSnapshot,
+                onFinishWrite: () => {
+                    cleanUp();
+                    onAnimationComplete();
+                },
+                onCancel: cleanUp
             });
         }
     }
 
     getSnapshotBeforeUpdate(){
-        this.store.takeSnapshot(this);
+        this.setStoreSnapshot();
         return null;
     }
 
@@ -154,13 +127,13 @@ class SingularComponent extends Component{
     }
 
     componentWillUnmount(){
-        this.store.takeSnapshot(this);
+        this.setStoreSnapshot();
         this.store.unregister(this);
     }
 
     render(){
         const {children} = this.props;
-        return this.shouldShow() ? Children.only(children) : null;
+        return this.shouldShow ? Children.only(children) : null;
     }
 }
 
@@ -174,12 +147,8 @@ SingularComponent.propTypes = {
     customTransitionElement: PropTypes.node,
     easing: PropTypes.func,
     useStyleAnimation: PropTypes.bool,
-    customAnimationHandlers: PropTypes.arrayOf( 
-        PropTypes.oneOfType([
-            PropTypes.func, 
-            PropTypes.oneOf(['width', 'height', 'fontSize']) 
-        ])
-    )
+    customAnimationHandlers: PropTypes.arrayOf( PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(DEFAULT_CUSTOM_ANIMATION_HANDLERS) ])),
+    extraSnapshotStyleAttributes: PropTypes.arrayOf(PropTypes.string)
 };
 
 SingularComponent.defaultProps = {
@@ -187,9 +156,11 @@ SingularComponent.defaultProps = {
     animationTrigger: 0,
     onAnimationBegin: () => {},
     onAnimationComplete: () => {},
-    easing: EasingFunctionsExtension.linear,
-    useStyleAnimation: false
+    easing: EasingFunctions.linear,
+    useStyleAnimation: false,
+    customAnimationHandlers: DEFAULT_CUSTOM_ANIMATION_HANDLERS,
+    extraSnapshotStyleAttributes: []
 };
 
 export default SingularComponent;
-export let EasingFunctions = EasingFunctionsExtension;
+export {EasingFunctions} from './subModules/easingFunctions';

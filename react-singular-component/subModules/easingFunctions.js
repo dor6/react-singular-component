@@ -3,7 +3,7 @@ const EaseOut = function(power){return function(t){return 1 - Math.abs(Math.pow(
 const EaseInOut = function(power){return function(t){return t<.5 ? EaseIn(power)(t*2)/2 : EaseOut(power)(t*2 - 1)/2+0.5}}
 
 
-const EasingFunctions = {
+export const EasingFunctions = {
     linear: EaseInOut(1),
     easeInQuad: EaseIn(2),
     easeOutQuad: EaseOut(2),
