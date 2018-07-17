@@ -1,6 +1,4 @@
-import {createSnapshot} from './createSnapshot';
-
-class SingularComponentStore{
+export default class SingularComponentStore{
     
     constructor(){
         this.components = [];
@@ -27,18 +25,4 @@ class SingularComponentStore{
             this.forceUpdateComponents();
         }
     }
-
-    takeSnapshot(component){
-        if(component.element){
-            this.lastSnapshot = createSnapshot(component.element);
-        }
-    }
-
 }
-
-const stores = {};
-
-export const getStore = (key) => {
-    if(!stores[key]) stores[key] = new SingularComponentStore();
-    return stores[key];
-};
