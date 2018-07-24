@@ -4,9 +4,9 @@ import ReactDOM, {findDOMNode} from 'react-dom';
 
 import {EasingFunctions} from "./subModules/easingFunctions";
 import {StyleHandlers} from './subModules/animationHandlers';
+import {SingularComponentStore} from './subModules/singularComponentStore';
 
 import {createSnapshot} from './utils/createSnapshot';
-import {getComponentStore} from './utils/getComponentStore';
 import {createAnimationElement} from './utils/createAnimationElement';
 import {calculateAnimationHandlers} from './utils/calculateAnimationHandlers';
 import {animateSingularComponentElement} from './utils/animateSingularComponentElement';
@@ -24,7 +24,7 @@ class SingularComponent extends Component{
 
     get store(){
         const {singularKey} = this.props;
-        return getComponentStore(singularKey);
+        return new SingularComponentStore(singularKey);
     }
 
     get shouldUseCustomAnimationHandlers(){
