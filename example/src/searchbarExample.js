@@ -42,7 +42,7 @@ export default class SearchbarExample extends React.Component{
 
     onInputChange(e, {value}){
         this.setState({value});
-        if(value == ''){
+        if(value === ''){
             this.setState({header: HEADERS[0]});
             if(this.headerTimeout) clearTimeout(this.headerTimeout);
         }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Grid, Header, Card, Button} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from 'react-singular-component';
+import SingularComponent from 'react-singular-component';
 
 
 class Note extends Component{

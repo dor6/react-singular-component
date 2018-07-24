@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {Tab} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from 'react-singular-component';
 import './stylesheets/semantic/semantic.css';
 
 import NotesExample from './notesExample';
 import SearchExample from'./searchbarExample';
+import ListExample from './listExample';
 
 class App extends Component {   
 
@@ -14,7 +14,8 @@ class App extends Component {
           <div className="App">
               <Tab menu={{ secondary: true, pointing: true }} panes={[
                   { menuItem: 'Search Example', render: () => <SearchExample/>},
-                  { menuItem: 'Notes Example', render: () => <NotesExample/> }
+                  { menuItem: 'Notes Example', render: () => <NotesExample/> },
+                  { menuItem: 'List Example', render: () => <ListExample/> }
               ]} />
           </div>
         );
