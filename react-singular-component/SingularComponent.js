@@ -3,6 +3,7 @@ import React, {Children, Component} from 'react';
 import ReactDOM, {findDOMNode} from 'react-dom';
 
 import {EasingFunctions} from "./subModules/easingFunctions";
+import {StyleHandlers} from './subModules/animationHandlers';
 
 import {createSnapshot} from './utils/createSnapshot';
 import {getComponentStore} from './utils/getComponentStore';
@@ -147,7 +148,7 @@ SingularComponent.propTypes = {
     customTransitionElement: PropTypes.node,
     easing: PropTypes.func,
     useStyleAnimation: PropTypes.bool,
-    customAnimationHandlers: PropTypes.arrayOf( PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(DEFAULT_CUSTOM_ANIMATION_HANDLERS) ])),
+    customAnimationHandlers: PropTypes.arrayOf( PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(Object.keys(StyleHandlers)) ])),
     extraSnapshotStyleAttributes: PropTypes.arrayOf(PropTypes.string)
 };
 
