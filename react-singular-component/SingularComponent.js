@@ -48,7 +48,7 @@ class SingularComponent extends Component{
         let styleAttrsToCopy = [...extraSnapshotStyleAttributes];
 
         // When Using styleAnimation (which uses the default customAnimationHandler) or customAnimationHandlers,
-        // We want to automaticly add the style handlers mentioned by their name to the snapshot.
+        // We want to automatically add the style handlers mentioned by their name to the snapshot.
         // for example if the 'width' handler is used than the width attribute will automatically be added.
         if(this.shouldUseCustomAnimationHandlers){
             styleAttrsToCopy.push(...customAnimationHandlers.filter((handler) => typeof handler === 'string'));
