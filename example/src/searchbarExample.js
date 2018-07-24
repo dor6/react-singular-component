@@ -59,6 +59,13 @@ export default class SearchbarExample extends React.Component{
         }
     }
 
+
+    componentWillUnmount(){
+        if(this.headerTimeout){
+            clearTimeout(this.headerTimeout);
+        }
+    }
+
     render(){
         return <React.Fragment>
             <Menu fluid attached borderless inverted color="purple" style={{height: '47px'}}>
