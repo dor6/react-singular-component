@@ -138,7 +138,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
         </tr>
          <tr>
           <td>customAnimationHandlers</td>
-          <td>['width','height','fontSize', color, backgroundColor, borderColor, borderRightColor, borderLeftColor, borderTopColor, borderBottomColor, (element, valueFormula, startSnapshot, targetSnapshot) => void]</td>
+          <td>['width','height','fontSize', 'color', 'backgroundColor', 'borderColor', 'borderRightColor', 'borderLeftColor', 'borderTopColor', 'borderBottomColor', (element, valueFormula, startSnapshot, targetSnapshot) => void]</td>
           <td></td>
           <td></td>
           <td>choose your own animation (which will be added to the position animation), provide your array of changes in addition to existing style animation. provide an array of supported styles you want to animate, in addition to your own custom function to animate yet unimplemented styles or more advance animation.
