@@ -1,17 +1,38 @@
+import {parseRGBA} from '../utils/parseRGBA';
 
 const createSizeAttributeHandler = (styleAttribute, suffix = 'px') => {
     return (element, valueFormula, startSnapshot, targetSnapshot) => {
         const value = valueFormula(parseInt(startSnapshot.style[styleAttribute]), parseInt(targetSnapshot.style[styleAttribute]));
         element.style[styleAttribute] = `${value}${suffix}`;
     }
+};  
+
+const createColorAttributeHandler = (styleAttribute) => {
+    return (element, valueFormula, startSnapshot, targetSnapshot) => {
+        const startColor = parseRGBA(startSnapshot.style[styleAttribute]);
+        const targetColor = parseRGBA(targetSnapshot.style[styleAttribute]);
+        
+        let calculatedColor = {};
+
+        for(let prop in startColor){
+            calculatedColor[prop] = valueFormula(startColor[prop], targetColor[prop]);
+        }
+
+        element.style[styleAttribute] = `rgba(${calculatedColor.r},${calculatedColor.g},${calculatedColor.b},${calculatedColor.a})`;
+    }
 };
 
-// add new style handlers here
-export const StyleHandlers = {
-    width: createSizeAttributeHandler('width'),
-    height: createSizeAttributeHandler('height'),
-    fontSize: createSizeAttributeHandler('fontSize')
-};
+
+export const StyleHandlers = {};
+
+['width', 'height', 'fontSize'].forEach((attr) => {
+    StyleHandlers[attr] = createSizeAttributeHandler(attr);
+});
+
+['color', 'backgroundColor', 'borderColor', ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Color`)].forEach((attr) => {
+    StyleHandlers[attr] = createColorAttributeHandler(attr);
+});
+
 
 export const ClearTransformHandler = (element) => element.style.transform = '';
 
