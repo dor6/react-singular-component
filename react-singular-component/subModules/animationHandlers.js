@@ -6,11 +6,41 @@ const createSizeAttributeHandler = (styleAttribute, suffix = 'px') => {
     }
 };
 
+const parseRGBA = (rgbaString) => {
+    let color = { a: 1 };
+
+    let attrs = rgbaString.split('(')[1].replace(')', '').split(',');
+
+    color.r = parseInt(attrs[0]);
+    color.g = parseInt(attrs[1]);
+    color.b = parseInt(attrs[2]);
+
+    if(attrs[3]) color.a = parseFloat(attrs[3]);
+
+    return color;
+};
+
+const createColorAttributeHandler = (styleAttribute) => {
+    return (element, valueFormula, startSnapshot, targetSnapshot) => {
+        const startColor = parseRGBA(startSnapshot.style[styleAttribute]);
+        const targetColor = parseRGBA(targetSnapshot.style[styleAttribute]);
+        
+        let calculatedColor = {};
+
+        for(let prop in startColor){
+            calculatedColor[prop] = valueFormula(startColor[prop], targetColor[prop]);
+        }
+
+        element.style[styleAttribute] = `rgba(${calculatedColor.r},${calculatedColor.g},${calculatedColor.b},${calculatedColor.a})`;
+    }
+};
+
 // add new style handlers here
 export const StyleHandlers = {
     width: createSizeAttributeHandler('width'),
     height: createSizeAttributeHandler('height'),
-    fontSize: createSizeAttributeHandler('fontSize')
+    fontSize: createSizeAttributeHandler('fontSize'),
+    backgroundColor: createColorAttributeHandler('backgroundColor')
 };
 
 export const ClearTransformHandler = (element) => element.style.transform = '';
