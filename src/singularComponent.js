@@ -106,19 +106,21 @@ class SingularComponent extends Component{
         }
     }
 
-    getSnapshotBeforeUpdate(){
-        this.setStoreSnapshot();
+    getSnapshotBeforeUpdate(nextProps){
+        if(this.props.animationTrigger !== nextProps.animationTrigger){
+            this.setStoreSnapshot();
+        }
         return null;
     }
 
-    componentDidUpdate(nextProps){
+    componentDidUpdate(prevProps){
         const element = findDOMNode(this);
 
         if(this.element !== element){
             this.element = element;
             if (this.element)   this.animateComponent();
         }
-        else if(this.element && this.props.animationTrigger !== nextProps.animationTrigger){
+        else if(this.element && this.props.animationTrigger !== prevProps.animationTrigger){
             this.animateComponent();
         }
     }

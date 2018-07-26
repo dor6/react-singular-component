@@ -63,8 +63,8 @@ export default class NotesExample extends React.Component{
     render(){
 
 
-        const renderNotes = (notes)=> {
-            return notes.map((note) => <Note key={note.id} notesCount={notes.length} note={note} singularPriority={1} toggleNote={this.toggleNote} />)
+        const renderNotes = (notes, priority)=> {
+            return notes.map((note) => <Note key={note.id} notesCount={notes.length} note={note} singularPriority={priority} toggleNote={this.toggleNote} />)
         };
 
         return <Grid padded>
@@ -76,16 +76,16 @@ export default class NotesExample extends React.Component{
 
             <Grid.Row>
                 <Grid.Column>
-                    <Card.Group centered style={{height: '15rem'}}>
-                        {renderNotes(this.state.notes.filter((note) => !note.done))}
+                    <Card.Group centered style={{minHeight: '15rem'}}>
+                        {renderNotes(this.state.notes.filter((note) => !note.done), 1)}
                     </Card.Group>
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row>
                 <Grid.Column>
-                    <Card.Group centered style={{height: '15rem'}}>
-                        {renderNotes(this.state.notes.filter((note) => note.done))}
+                    <Card.Group centered style={{minHeight: '15rem'}}>
+                        {renderNotes(this.state.notes.filter((note) => note.done), 2)}
                     </Card.Group>
                 </Grid.Column>
             </Grid.Row>

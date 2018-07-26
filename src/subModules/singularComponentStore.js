@@ -23,6 +23,8 @@ export class SingularComponentStore{
 
     register(component){
         this.cancelClearStore();
+        this.components.forEach(component => component.setStoreSnapshot());
+
         this.components.push(component);
         this.forceUpdateComponents();
     }
