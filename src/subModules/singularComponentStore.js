@@ -36,6 +36,7 @@ export class SingularComponentStore{
         }
         
         if(this.components.length === 0){
+            if(this.lastAnimation)   this.lastAnimation.cancel();
             this.requestClearStore();
         }
     }
