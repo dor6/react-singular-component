@@ -8,6 +8,9 @@ Use this for better user exprience, helping them understand its the same compone
 Just wrap your components with the SingularComponent, give them the same singularKey, 
 and a singularPriority to choose which one of them to show(higher priority will show the componenet).
 
+## example
+click [here](https://dor6.github.io/react-singular-component/) for live example!
+
 ### How is it different from react-overdrive
 react-overdrive wait for you to unmount your component and mount your component. 
 Hoping that you will unmount it exactly the same time. 
