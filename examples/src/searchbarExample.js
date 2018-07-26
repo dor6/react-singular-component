@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Menu, Input, Ref, Grid, Header} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from 'react-singular-component';
+import SingularComponent, {EasingFunctions} from '../../src';
 
 
 class SingularSearch extends Component{
