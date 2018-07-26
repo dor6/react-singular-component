@@ -2,8 +2,12 @@
   "name": "react-singular-component",
   "description": "Animate Component Movment In React",
   "author": "Dor Gross 6",
-  "version": "6.7.2",
-  "homepage": "https://github.com/dor6/SingularComponent",
+  "version": "6.7.3",
+  "homepage": "https://github.com/dor6/react-singular-component",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dor6/react-singular-component.git"
+  },
   "license": "MIT",
   "keywords": [
     "react",
