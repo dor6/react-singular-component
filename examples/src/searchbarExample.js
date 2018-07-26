@@ -38,32 +38,48 @@ export default class SearchbarExample extends React.Component{
 
         this.state = {  value: '' , header: HEADERS[0]};
         this.onInputChange = this.onInputChange.bind(this);
+        this.clearHeaderTimeout = this.clearHeaderTimeout.bind(this);
+        this.setHeaderTimeout = this.setHeaderTimeout.bind(this);
     }   
 
+    setHeaderTimeout(){
+        if(!this.headerTimeout){
+            this.headerTimeout = setTimeout(() => {
+                this.clearHeaderTimeout();
+                this.setState({header: HEADERS[2]});
+            }, 3000);
+        }
+    };
+
+    clearHeaderTimeout(){
+        if(this.headerTimeout){
+            clearTimeout(this.headerTimeout);
+            this.headerTimeout = undefined;
+        }
+    };
+
     onInputChange(e, {value}){
-        this.setState({value});
         if(value === ''){
-            this.setState({header: HEADERS[0]});
-            if(this.headerTimeout) clearTimeout(this.headerTimeout);
+            this.setState({header: HEADERS[0], value});
+            this.clearHeaderTimeout();
         }
         else if(this.state.value === ''){
-            this.setState({header: HEADERS[1]});
+            this.setState({header: HEADERS[1], value});
+        }
+        else{
+            this.setState({value}); 
         }
     }
 
     componentDidUpdate(){
         if(this.state.header === HEADERS[1]){
-            this.headerTimeout = setTimeout(() => {
-                this.setState({header: HEADERS[2]});
-            }, 3000);
+            this.setHeaderTimeout();
         }
     }
 
 
     componentWillUnmount(){
-        if(this.headerTimeout){
-            clearTimeout(this.headerTimeout);
-        }
+        this.clearHeaderTimeout();
     }
 
     render(){
@@ -86,7 +102,7 @@ export default class SearchbarExample extends React.Component{
                       <Grid.Column textAlign="center">
                           {
                               this.state.value.length === 0 ?
-                                  <SingularSearch singularPriority={2} style={{width: '600px'}} value={this.state.value} onChange={this.onInputChange}/> : ''
+                                  <SingularSearch singularPriority={2} style={{maxWidth: '600px', width: '100%'}} value={this.state.value} onChange={this.onInputChange}/> : ''
                           }
                       </Grid.Column>
                   </Grid.Row>

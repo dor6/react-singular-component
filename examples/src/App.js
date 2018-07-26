@@ -13,7 +13,7 @@ class App extends Component {
     render() {
         return (
           <div className="App">
-              <Tab menu={{ secondary: true, pointing: true }} panes={[
+              <Tab menu={{ secondary: true, pointing: true, stackable: true }} panes={[
                   { menuItem: 'Search Example', render: () => <SearchExample/>},
                   { menuItem: 'Notes Example', render: () => <NotesExample/> },
                   { menuItem: 'List Example', render: () => <ListExample/> },
