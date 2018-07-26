@@ -9,7 +9,7 @@
     "react",
     "animation"
   ],
-  "main": "dist/SingularComponent.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development",

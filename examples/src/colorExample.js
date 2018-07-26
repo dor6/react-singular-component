@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Grid, Header, Button, Container} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from '../../src/SingularComponent';
+import SingularComponent, {EasingFunctions} from '../../src';
 
 
 class ColorExampleItem extends Component{

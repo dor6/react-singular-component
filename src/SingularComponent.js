@@ -164,4 +164,3 @@ SingularComponent.defaultProps = {
 };
 
 export default SingularComponent;
-export {EasingFunctions} from './subModules/easingFunctions';
