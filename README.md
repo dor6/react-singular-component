@@ -1,5 +1,7 @@
 # SingularComponent
 Move your react component around the dom
+### Click [Here](https://dor6.github.io/react-singular-component/) For Live Example!!!!!!!!
+
 
 ![alt text](https://image.ibb.co/jJ5Non/example.gif)
 
@@ -7,17 +9,6 @@ Transition from one component to another component seamlessly.
 Use this for better user exprience, helping them understand its the same component.
 Just wrap your components with the SingularComponent, give them the same singularKey, 
 and a singularPriority to choose which one of them to show(higher priority will show the componenet).
-
-## example
-click [here](https://dor6.github.io/react-singular-component/) for live example!
-
-### How is it different from react-overdrive
-react-overdrive wait for you to unmount your component and mount your component. 
-Hoping that you will unmount it exactly the same time. 
-Things can get complicated when you have more than 2 components at the same page, or if you can't time the unmounting at the same time.
-SingularComponent will mount and unmount it for you, according to the singularPriority,
-it gives you more control and makes the behaviour clearer.
-
 
 ## Install
 
