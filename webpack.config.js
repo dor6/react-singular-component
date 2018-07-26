@@ -1,9 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
     template: path.join(__dirname, "examples/src/index.html"),
-    filename: "./index.html"
+    filename: "./index.html",
+    favicon: path.join(__dirname, "examples/src/favicon.ico"),
+    inject: true
 });
+
 module.exports = {
     entry: path.join(__dirname, "examples/src/index.js"),
     output: {
@@ -22,7 +26,7 @@ module.exports = {
                 use: ["style-loader", "css-loader"]
             },
             {
-                test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)$/,
+                test: /\.(png|jpg|gif|ico|eot|svg|ttf|woff|woff2)$/,
                 use: [
                   {
                     loader: 'url-loader'
