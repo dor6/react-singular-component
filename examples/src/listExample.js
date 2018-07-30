@@ -11,6 +11,11 @@ class ListItem extends Component{
         super(props);
    
         this.removeItem = this.removeItem.bind(this);
+        this.handleAnimationBegin = this.handleAnimationBegin.bind(this);
+    }
+
+    handleAnimationBegin(originalElement, animationElement){
+        animationElement.getElementsByClassName('button')[0].addEventListener('click', this.removeItem);
     }
 
     removeItem(){
@@ -25,7 +30,7 @@ class ListItem extends Component{
             animationTrigger={index}
             easing={EasingFunctions.easeOutCubic}
             singularKey={`ListItem-${itemId}`} 
-            singularPriority={1}>
+            singularPriority={1} onAnimationBegin={this.handleAnimationBegin}>
             <Segment clearing textAlign='left'>
                 {itemId}
                 <Button basic circular floated='right' icon='delete' onClick={this.removeItem}/>

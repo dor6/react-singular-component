@@ -7,8 +7,27 @@ import SingularComponent, {EasingFunctions} from '../../src';
 
 class SingularSearch extends Component{
 
+    constructor(props){
+        super(props);
+        this.handleRef = this.handleRef.bind(this);
+        this.handleAnimationBegin = this.handleAnimationBegin.bind(this);
+        this.handleAnimationComplete = this.handleAnimationComplete.bind(this);
+    }
+
     handleRef(element){
         element.getElementsByTagName('input')[0].focus();
+    }
+
+    handleAnimationBegin(originalElement, animationElement){
+        let input = animationElement.getElementsByTagName('input')[0];
+        input.selectionEnd = input.value.length;
+        input.selectionStart = input.value.length;
+        input.focus();
+        input.addEventListener('input', (e) => this.props.onChange(e, e.target));
+    }
+
+    handleAnimationComplete(originalElement){
+        this.handleRef(originalElement);
     }
 
     render(){
@@ -18,7 +37,11 @@ class SingularSearch extends Component{
             useStyleAnimation
             easing={EasingFunctions.easeOutCubic}
             singularKey="SingleInput" 
-            singularPriority={singularPriority}>
+            singularPriority={singularPriority}
+            onAnimationBegin={this.handleAnimationBegin}
+            onAnimationComplete={this.handleAnimationComplete}
+            animationDuration={3000}
+            >
             <Ref innerRef={this.handleRef}>
                 <Input icon="search" value={value} style={style} onChange={onChange} />
             </Ref>
