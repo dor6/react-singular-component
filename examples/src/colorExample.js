@@ -37,15 +37,11 @@ class ColorExampleItem extends Component{
 
 
 export default class ColorExample extends React.Component{
-    constructor(props){
-        super(props);
 
-        this.state = { inverted: false };
 
-        this.toggleInverted = this.toggleInverted.bind(this);
-    }
+    state = { inverted: false };
 
-    toggleInverted(){
+    toggleInverted = () => {
         this.setState({inverted: !this.state.inverted});
     }
 

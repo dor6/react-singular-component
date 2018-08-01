@@ -7,13 +7,7 @@ import SingularComponent from '../../src';
 
 class Note extends Component{
 
-    constructor(props){
-        super(props);
-
-        this.toggleNote = this.toggleNote.bind(this);
-    }   
-
-    toggleNote(){
+    toggleNote = () => {
         this.props.toggleNote(this.props.note.id);
     }
 
@@ -49,12 +43,10 @@ export default class NotesExample extends React.Component{
 
 
         this.state = { notes };
-
-        this.toggleNote = this.toggleNote.bind(this);
     }   
 
     
-    toggleNote(noteId){
+    toggleNote = (noteId) => {
         let newNotes = this.state.notes;
         newNotes[noteId].done = !newNotes[noteId].done;
         this.setState({notes: newNotes});

@@ -16,12 +16,6 @@ const DEFAULT_CUSTOM_ANIMATION_HANDLERS = ['width', 'height', 'fontSize'];
 
 class SingularComponent extends Component{
 
-    constructor(props){
-        super(props);
-        this.takeSnapshot = this.takeSnapshot.bind(this);
-        this.setStoreSnapshot = this.setStoreSnapshot.bind(this);
-    }
-
     get store(){
         const {singularKey} = this.props;
         return new SingularComponentStore(singularKey);
@@ -42,7 +36,7 @@ class SingularComponent extends Component{
     }
 
 
-    takeSnapshot(){
+    takeSnapshot = () => {
         const {extraSnapshotStyleAttributes, customAnimationHandlers} = this.props;
         
         let styleAttrsToCopy = [...extraSnapshotStyleAttributes];
@@ -57,13 +51,13 @@ class SingularComponent extends Component{
         return createSnapshot(this.element, styleAttrsToCopy);
     }
 
-    setStoreSnapshot(){
+    setStoreSnapshot = () => {
         if(this.element){
             this.store.lastSnapshot = this.takeSnapshot();
         }
     }
 
-    createAnimationElement(){
+    createAnimationElement = () => {
         const {customTransitionElement} = this.props;
         let animationFromElement = this.element;
 
@@ -78,7 +72,7 @@ class SingularComponent extends Component{
         return createAnimationElement(animationFromElement);
     }
 
-    animateComponent(){
+    animateComponent = () => {
         const {animationDuration, easing, onAnimationBegin, onAnimationComplete} = this.props;
         const {lastAnimation, lastSnapshot} = this.store;
         

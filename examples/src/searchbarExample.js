@@ -7,18 +7,11 @@ import SingularComponent, {EasingFunctions} from '../../src';
 
 class SingularSearch extends Component{
 
-    constructor(props){
-        super(props);
-        this.handleRef = this.handleRef.bind(this);
-        this.handleAnimationBegin = this.handleAnimationBegin.bind(this);
-        this.handleAnimationComplete = this.handleAnimationComplete.bind(this);
-    }
-
-    handleRef(element){
+    handleRef = (element) => {
         element.getElementsByTagName('input')[0].focus();
     }
 
-    handleAnimationBegin(originalElement, animationElement){
+    handleAnimationBegin = (originalElement, animationElement) => {
         let input = animationElement.getElementsByTagName('input')[0];
         input.selectionEnd = input.value.length;
         input.selectionStart = input.value.length;
@@ -26,7 +19,7 @@ class SingularSearch extends Component{
         input.addEventListener('input', (e) => this.props.onChange(e, e.target));
     }
 
-    handleAnimationComplete(originalElement){
+    handleAnimationComplete = (originalElement) => {
         this.handleRef(originalElement);
     }
 
@@ -40,10 +33,10 @@ class SingularSearch extends Component{
             singularPriority={singularPriority}
             onAnimationBegin={this.handleAnimationBegin}
             onAnimationComplete={this.handleAnimationComplete}
-            animationDuration={3000}
+            animationDuration={1000}
             >
             <Ref innerRef={this.handleRef}>
-                <Input icon="search" value={value} style={style} onChange={onChange} />
+                <Input icon="search" focus value={value} style={style} onChange={onChange} />
             </Ref>
         </SingularComponent>;
     }
@@ -56,16 +49,10 @@ const HEADERS = [
 ];
 
 export default class SearchbarExample extends React.Component{
-    constructor(props){
-        super(props);
 
-        this.state = {  value: '' , header: HEADERS[0]};
-        this.onInputChange = this.onInputChange.bind(this);
-        this.clearHeaderTimeout = this.clearHeaderTimeout.bind(this);
-        this.setHeaderTimeout = this.setHeaderTimeout.bind(this);
-    }   
+    state = {  value: '' , header: HEADERS[0]};
 
-    setHeaderTimeout(){
+    setHeaderTimeout = () => {
         if(!this.headerTimeout){
             this.headerTimeout = setTimeout(() => {
                 this.clearHeaderTimeout();
@@ -74,14 +61,14 @@ export default class SearchbarExample extends React.Component{
         }
     };
 
-    clearHeaderTimeout(){
+    clearHeaderTimeout = () => {
         if(this.headerTimeout){
             clearTimeout(this.headerTimeout);
             this.headerTimeout = undefined;
         }
     };
 
-    onInputChange(e, {value}){
+    onInputChange = (e, {value}) => {
         if(value === ''){
             this.setState({header: HEADERS[0], value});
             this.clearHeaderTimeout();
