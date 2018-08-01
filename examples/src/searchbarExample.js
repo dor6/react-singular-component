@@ -13,15 +13,15 @@ class SingularSearch extends Component{
 
     handleAnimationBegin = (originalElement, animationElement) => {
         let input = animationElement.getElementsByTagName('input')[0];
-        input.selectionEnd = input.value.length;
-        input.selectionStart = input.value.length;
+        input.selectionEnd = input.selectionStart = input.value.length;
         input.focus();
-        input.addEventListener('input', (e) => this.props.onChange(e, e.target));
+        input.addEventListener('input', (e) => this.props.onChange(e, { value: e.target.value }));
     }
 
     handleAnimationComplete = (originalElement) => {
         this.handleRef(originalElement);
     }
+
 
     render(){
         const {singularPriority, style, value, onChange} = this.props;
