@@ -7,13 +7,11 @@ import SingularComponent, {EasingFunctions} from '../../src';
 
 class ListItem extends Component{
 
-    constructor(props){
-        super(props);
-   
-        this.removeItem = this.removeItem.bind(this);
+    handleAnimationBegin = (originalElement, animationElement) => {
+        animationElement.getElementsByClassName('button')[0].addEventListener('click', this.removeItem);
     }
 
-    removeItem(){
+    removeItem = () => {
         const {itemId, removeItem} = this.props;
         removeItem(itemId);
     }
@@ -25,7 +23,7 @@ class ListItem extends Component{
             animationTrigger={index}
             easing={EasingFunctions.easeOutCubic}
             singularKey={`ListItem-${itemId}`} 
-            singularPriority={1}>
+            singularPriority={1} onAnimationBegin={this.handleAnimationBegin}>
             <Segment clearing textAlign='left'>
                 {itemId}
                 <Button basic circular floated='right' icon='delete' onClick={this.removeItem}/>
@@ -40,20 +38,14 @@ let itemsCounter = 0;
 const getNextItemId = () => itemsCounter++;
 
 export default class ListExample extends React.Component{
-    constructor(props){
-        super(props);
 
-        this.state = { items: [] };
+    state = { items: [] };
 
-        this.addItem = this.addItem.bind(this);
-        this.removeItem = this.removeItem.bind(this);
-    }
-
-    addItem(){
+    addItem = () => {
         this.setState({items: [getNextItemId(), ...this.state.items]});
     }
 
-    removeItem(itemId){
+    removeItem = (itemId) => {
         let nextItems = this.state.items;
         nextItems.splice(nextItems.indexOf(itemId), 1);
         this.setState({items: nextItems});

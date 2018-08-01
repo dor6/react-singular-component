@@ -84,7 +84,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
         <tr>
           <td>animationDuration</td>
           <td>Number</td>
-          <td>300</td>
+          <td>500</td>
           <td></td>
           <td>Miliseconds duration</td>
         </tr>
@@ -97,14 +97,14 @@ while i render both we will only see the instance with a priority of 2, but i wi
         </tr>
         <tr>
           <td>onAnimationBegin</td>
-          <td>() => void</td>
+          <td>(originalElement, animationElement) => void</td>
           <td></td>
           <td></td>
           <td>callback when the animation begins</td>
         </tr>
         <tr>
           <td>onAnimationComplete</td>
-          <td>() => void</td>
+          <td>(originalElement) => void</td>
           <td></td>
           <td></td>
           <td>Callback when the animation ends</td>
