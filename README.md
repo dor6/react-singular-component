@@ -186,3 +186,7 @@ and you're ready to go and make whatever changes you have in mind
 
 Please note this is only the start of the this project there is a lot to add.
 This is a concept I want to push forward and needs work.
+
+## Changelog
+
+view the changelog  [here](https://github.com/dor6/react-singular-component/blob/master/CHANGELOG.md)
