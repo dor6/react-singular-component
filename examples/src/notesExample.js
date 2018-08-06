@@ -18,7 +18,7 @@ class Note extends Component{
 
     render(){
         const {props} = this;
-        return <SingularComponent continuousAnimation singularKey={`note-${props.note.id}`} animationDuration={500} singularPriority={props.singularPriority} animationTrigger={props.notesCount} onAnimationBegin={this.handleAnimationBegin} >
+        return <SingularComponent singularKey={`note-${props.note.id}`} singularPriority={props.singularPriority} animationTrigger={props.notesCount} onAnimationBegin={this.handleAnimationBegin} >
             <Card>
                 <Card.Content>
                     <Card.Header>{props.note.header}</Card.Header>

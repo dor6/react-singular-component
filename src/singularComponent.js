@@ -162,7 +162,7 @@ SingularComponent.defaultProps = {
     useStyleAnimation: false,
     customAnimationHandlers: DEFAULT_CUSTOM_ANIMATION_HANDLERS,
     extraSnapshotStyleAttributes: [],
-    continuousAnimation: false
+    continuousAnimation: true
 };
 
 export default SingularComponent;

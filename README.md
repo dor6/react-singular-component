@@ -132,7 +132,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
         </tr>
          <tr>
           <td>customAnimationHandlers</td>
-          <td>['width','height','fontSize', 'color', 'backgroundColor', 'borderColor', 'borderRightColor', 'borderLeftColor', 'borderTopColor', 'borderBottomColor', (element, valueFormula, startSnapshot, targetSnapshot) => void]</td>
+          <td>['width','height','fontSize', 'color', 'backgroundColor', 'borderColor', 'borderRightColor', 'borderLeftColor', 'borderTopColor', 'borderBottomColor', (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => void]</td>
           <td></td>
           <td></td>
           <td>choose your own animation (which will be added to the position animation), provide your array of changes in addition to existing style animation. provide an array of supported styles you want to animate, in addition to your own custom function to animate yet unimplemented styles or more advance animation.
@@ -146,6 +146,8 @@ while i render both we will only see the instance with a priority of 2, but i wi
               <br/>
               - targetSnapshot: same as startSnapshot but of the element end state of the animation
               <br/>
+              - snapshotTrack: update this object with the styles you used and updated in the element. for example when using snapshot.style.width and we calculate new width, we will set snapshotTrack.style.width = element.style.width = calculated width. this is used for continousAnimation which enables animating from the middle of another animation without the element jumping from place to place.
+              <br/>
               <br/>
               ~~~snapshots explained~~~
               <br/>
@@ -158,6 +160,13 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td>[]</td>
           <td></td>
           <td>Add the given style attributes to the style snapshot they will be joined with the customAnimtionHandlers provided by their name ('width', 'fontSize'...). use this when you make your own customAnimationHandler and the given snapshot isnt enough. ( copying all the styles to the snapshot is to heavy )</td>
+        </tr>
+        <tr>
+          <td>continuousAnimation</td>
+          <td>Boolean</td>
+          <td>true</td>
+          <td></td>
+          <td>When true, if the component starts a new animation in the middle of an ongoing one, the component will animate from its current postion and not from its last position. making sure the animation will continue and the component won't jump when starting a new animation. (when reffering to position, this includes the whole snapshot). if you use your own animation handler and you dont update the snapshotTrack, you will want to set this prop to false</td>
         </tr>
     </tbody>
 </table>
