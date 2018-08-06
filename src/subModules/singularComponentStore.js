@@ -6,6 +6,7 @@ export class SingularComponentStore{
     constructor(key){
         if(!stores[key]){
             this.components = [];
+            this.lastAnimation = {  ongoing: false };
             this._key = key;
             stores[key] = this;
         }
@@ -38,7 +39,7 @@ export class SingularComponentStore{
         }
         
         if(this.components.length === 0){
-            if(this.lastAnimation)   this.lastAnimation.cancel();
+            if(this.lastAnimation.ongoing)   this.lastAnimation.cancel(true);
             this.requestClearStore();
         }
     }

@@ -5,11 +5,23 @@ export const animateSingularComponentElement = (animationElement, getTargetSnaps
     let animationFrame;
     let startingTimestamp;
 
+    const animationObject = {
+        ongoing: true,
+        cancel: (stayOngoing = false) => {
+            if(animationFrame){
+                cancelSmartAnimationFrame(animationFrame);
+                animationObject.ongoing = stayOngoing;
+                onCancel();
+            }
+        },
+        snapshotTrack: { rect: {}, style: {} }
+    }
+
     const stepRead = (timestamp) => {
         startingTimestamp = startingTimestamp ? startingTimestamp : timestamp;
         const progress = timestamp - startingTimestamp;
-        
         let targetSnapshot;
+
         
         if(progress < duration){
             animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
@@ -26,23 +38,17 @@ export const animateSingularComponentElement = (animationElement, getTargetSnaps
     const stepWrite = (timestamp, {targetSnapshot, progress}) => {
         if(progress < duration){
             const valueFormula = (startValue, endValue) => startValue + (endValue - startValue) * easing(progress/duration);
-            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, targetSnapshot));
+            animationHandlers.forEach((handler) => handler(animationElement, valueFormula, startSnapshot, targetSnapshot, animationObject.snapshotTrack));
         }
         else{
+            animationObject.ongoing = false;
             onFinishWrite();
         }
     };
 
     animationFrame = requestSmartAnimationFrame(stepWrite, stepRead);
 
-    return {
-        cancel: () => {
-            if(animationFrame){
-                cancelSmartAnimationFrame(animationFrame);
-                onCancel();
-            }
-        }
-    };
+    return animationObject;
 };
 
 export default animateSingularComponentElement;

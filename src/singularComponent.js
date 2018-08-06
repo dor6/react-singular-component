@@ -36,7 +36,7 @@ class SingularComponent extends Component{
     }
 
 
-    takeSnapshot = () => {
+    takeSnapshot = (element = this.element) => {
         const {extraSnapshotStyleAttributes, customAnimationHandlers} = this.props;
         
         let styleAttrsToCopy = [...extraSnapshotStyleAttributes];
@@ -48,7 +48,7 @@ class SingularComponent extends Component{
             styleAttrsToCopy.push(...customAnimationHandlers.filter((handler) => typeof handler === 'string'));
         }
         
-        return createSnapshot(this.element, styleAttrsToCopy);
+        return createSnapshot(element, styleAttrsToCopy);
     }
 
     setStoreSnapshot = () => {
@@ -73,12 +73,16 @@ class SingularComponent extends Component{
     }
 
     animateComponent = () => {
-        const {animationDuration, easing, onAnimationBegin, onAnimationComplete} = this.props;
+        const {animationDuration, easing, onAnimationBegin, onAnimationComplete, continuousAnimation} = this.props;
         const {lastAnimation, lastSnapshot} = this.store;
+        let startSnapshot = lastSnapshot;
         
-        if(lastAnimation)   lastAnimation.cancel();
+        if(lastAnimation.ongoing){
+            if(continuousAnimation)  startSnapshot = lastAnimation.snapshotTrack;
+            lastAnimation.cancel();
+        }
 
-        if(lastSnapshot){
+        if(startSnapshot){
             const animationElement = this.createAnimationElement();
             this.element.style.visibility = 'hidden';
 
@@ -89,7 +93,7 @@ class SingularComponent extends Component{
 
             onAnimationBegin(this.element, animationElement);
 
-            this.store.lastAnimation = animateSingularComponentElement( animationElement, this.takeSnapshot, lastSnapshot, this.animationHandlers, easing, animationDuration, { 
+            this.store.lastAnimation = animateSingularComponentElement( animationElement, this.takeSnapshot, startSnapshot, this.animationHandlers, easing, animationDuration, { 
                 onFinishRead: this.setStoreSnapshot,
                 onFinishWrite: () => {
                     cleanUp();
@@ -145,7 +149,8 @@ SingularComponent.propTypes = {
     easing: PropTypes.func,
     useStyleAnimation: PropTypes.bool,
     customAnimationHandlers: PropTypes.arrayOf( PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(Object.keys(StyleHandlers)) ])),
-    extraSnapshotStyleAttributes: PropTypes.arrayOf(PropTypes.string)
+    extraSnapshotStyleAttributes: PropTypes.arrayOf(PropTypes.string),
+    continuousAnimation: PropTypes.bool
 };
 
 SingularComponent.defaultProps = {
@@ -156,7 +161,8 @@ SingularComponent.defaultProps = {
     easing: EasingFunctions.linear,
     useStyleAnimation: false,
     customAnimationHandlers: DEFAULT_CUSTOM_ANIMATION_HANDLERS,
-    extraSnapshotStyleAttributes: []
+    extraSnapshotStyleAttributes: [],
+    continuousAnimation: true
 };
 
 export default SingularComponent;
