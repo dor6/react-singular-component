@@ -9,11 +9,16 @@ class Note extends Component{
 
     toggleNote = () => {
         this.props.toggleNote(this.props.note.id);
-    }
+    };
+
+    handleAnimationBegin = (originalElement, animationElement) => {
+        animationElement.getElementsByClassName('button')[0].addEventListener('click', this.toggleNote);
+        animationElement.style.zIndex = this.props.note.id;
+    };
 
     render(){
         const {props} = this;
-        return <SingularComponent singularKey={`note-${props.note.id}`} singularPriority={props.singularPriority} animationTrigger={props.notesCount}>
+        return <SingularComponent continuousAnimation singularKey={`note-${props.note.id}`} animationDuration={500} singularPriority={props.singularPriority} animationTrigger={props.notesCount} onAnimationBegin={this.handleAnimationBegin} >
             <Card>
                 <Card.Content>
                     <Card.Header>{props.note.header}</Card.Header>
