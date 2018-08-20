@@ -11,6 +11,7 @@ import {createAnimationElement} from './utils/createAnimationElement';
 import {calculateAnimationHandlers} from './utils/calculateAnimationHandlers';
 import {animateSingularComponentElement} from './utils/animateSingularComponentElement';
 
+console.info(Object.keys(EasingFunctions).toString());
 
 const DEFAULT_CUSTOM_ANIMATION_HANDLERS = ['width', 'height', 'fontSize'];
 
@@ -93,7 +94,7 @@ class SingularComponent extends Component{
 
             onAnimationBegin(this.element, animationElement);
 
-            this.store.lastAnimation = animateSingularComponentElement( animationElement, this.takeSnapshot, startSnapshot, this.animationHandlers, easing, animationDuration, { 
+            this.store.lastAnimation = animateSingularComponentElement( animationElement, this.takeSnapshot, startSnapshot, this.animationHandlers, EasingFunctions[easing], animationDuration, { 
                 onFinishRead: this.setStoreSnapshot,
                 onFinishWrite: () => {
                     cleanUp();
@@ -146,7 +147,7 @@ SingularComponent.propTypes = {
     onAnimationBegin: PropTypes.func,
     onAnimationComplete: PropTypes.func,
     customTransitionElement: PropTypes.node,
-    easing: PropTypes.func,
+    easing: PropTypes.oneOf(Object.keys(EasingFunctions)),
     useStyleAnimation: PropTypes.bool,
     customAnimationHandlers: PropTypes.arrayOf( PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(Object.keys(StyleHandlers)) ])),
     extraSnapshotStyleAttributes: PropTypes.arrayOf(PropTypes.string),
@@ -158,7 +159,7 @@ SingularComponent.defaultProps = {
     animationTrigger: 0,
     onAnimationBegin: () => {},
     onAnimationComplete: () => {},
-    easing: EasingFunctions.linear,
+    easing: 'easeOutQuad',
     useStyleAnimation: false,
     customAnimationHandlers: DEFAULT_CUSTOM_ANIMATION_HANDLERS,
     extraSnapshotStyleAttributes: [],

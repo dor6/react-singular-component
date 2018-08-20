@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Menu, Input, Ref, Grid, Header} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from '../../src';
+import SingularComponent from '../../src';
 
 
 class SingularSearch extends Component{
@@ -28,7 +28,6 @@ class SingularSearch extends Component{
 
         return <SingularComponent 
             useStyleAnimation
-            easing={EasingFunctions.easeOutCubic}
             singularKey="SingleInput" 
             singularPriority={singularPriority}
             onAnimationBegin={this.handleAnimationBegin}

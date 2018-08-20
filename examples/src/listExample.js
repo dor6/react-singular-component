@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Grid, Header, Segment, Button, Container} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from '../../src';
+import SingularComponent from '../../src';
 
 
 class ListItem extends Component{
@@ -21,7 +21,6 @@ class ListItem extends Component{
 
         return <SingularComponent 
             animationTrigger={index}
-            easing={EasingFunctions.easeOutCubic}
             singularKey={`ListItem-${itemId}`} 
             singularPriority={1} onAnimationBegin={this.handleAnimationBegin}>
             <Segment clearing textAlign='left'>
