@@ -121,7 +121,7 @@ while i render both we will only see the instance with a priority of 2, but i wi
           <td>'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'easeInQuart', 'easeOutQuart', 'easeInOutQuart', 'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 'easeInElastic', 'easeOutElastic', 'easeInOutElastic', 'easeInSin', 'easeOutSin', 'easeInOutSin'</td>
           <td>'easeOutQuad'</td>
           <td></td>
-          <td>The name of the easing formula that will be used. See here: [https://easings.net/]. </td>
+          <td>The name of the easing formula that will be used. See here: https://easings.net/ . </td>
         </tr>
          <tr>
           <td>useStyleAnimation</td>
