@@ -118,10 +118,10 @@ while i render both we will only see the instance with a priority of 2, but i wi
         </tr>
         <tr>
           <td>easing</td>
-          <td>(Number) => Number</td>
-          <td>EasingFunctions.Linear</td>
+          <td>'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'easeInQuart', 'easeOutQuart', 'easeInOutQuart', 'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 'easeInElastic', 'easeOutElastic', 'easeInOutElastic', 'easeInSin', 'easeOutSin', 'easeInOutSin'</td>
+          <td>'easeOutQuad'</td>
           <td></td>
-          <td>Given the progress, return the easing progress value. See here: https://easings.net/ . You can import easing functions like that: ```import SingularComponent, {EasingFunctions} from 'react-singular-component'; EasingFunctions.easeOutCubic``` or make your own function</td>
+          <td>The name of the easing formula that will be used. See here: https://easings.net/ . </td>
         </tr>
          <tr>
           <td>useStyleAnimation</td>
@@ -177,7 +177,6 @@ while i render both we will only see the instance with a priority of 2, but i wi
 
 Simply fork and clone
 
-    cd example
     npm install
     npm start
 

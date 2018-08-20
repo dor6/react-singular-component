@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Grid, Header, Button, Container} from 'semantic-ui-react';
 
-import SingularComponent, {EasingFunctions} from '../../src';
+import SingularComponent from '../../src';
 
 
 class ColorExampleItem extends Component{
@@ -25,7 +25,6 @@ class ColorExampleItem extends Component{
         return <SingularComponent
             animationDuration={1000}
             customAnimationHandlers={['color', 'borderColor']}
-            easing={EasingFunctions.easeOutCubic}
             singularKey={'ColorExampleItem'} 
             singularPriority={singularPriority}>
             <div style={style}>
