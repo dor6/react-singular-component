@@ -11,7 +11,7 @@ import {createAnimationElement} from './utils/createAnimationElement';
 import {calculateAnimationHandlers} from './utils/calculateAnimationHandlers';
 import {animateSingularComponentElement} from './utils/animateSingularComponentElement';
 
-console.info(Object.keys(EasingFunctions).toString());
+
 
 const DEFAULT_CUSTOM_ANIMATION_HANDLERS = ['width', 'height', 'fontSize'];
 
