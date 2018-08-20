@@ -177,7 +177,6 @@ while i render both we will only see the instance with a priority of 2, but i wi
 
 Simply fork and clone
 
-    cd example
     npm install
     npm start
 
