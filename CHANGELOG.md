@@ -1,3 +1,10 @@
+8.0.0:  
+- drop support of custom easing function as it seems unneeded.
+- easing prop now accepts only the name of the easing function instead of a function (you can see all the existing functions in the readme).
+- default easing is now 'easeOutQuad' instead of 'linear'.
+
+---
+
 7.0.1:  
 - added changelog to readme.
 
