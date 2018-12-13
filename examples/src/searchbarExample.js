@@ -7,10 +7,6 @@ import SingularComponent from '../../src';
 
 class SingularSearch extends Component{
 
-    handleRef = (element) => {
-        element.getElementsByTagName('input')[0].focus();
-    }
-
     handleAnimationBegin = (originalElement, animationElement) => {
         let input = animationElement.getElementsByTagName('input')[0];
         input.selectionEnd = input.selectionStart = input.value.length;
@@ -19,7 +15,7 @@ class SingularSearch extends Component{
     }
 
     handleAnimationComplete = (originalElement) => {
-        this.handleRef(originalElement);
+        originalElement.getElementsByTagName('input')[0].focus();
     }
 
 
