@@ -10,29 +10,45 @@ const createSizeAttributeHandler = (styleAttribute, suffix = 'px') => {
 
 const createColorAttributeHandler = (styleAttribute) => {
     return (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => {
-        const startColor = parseRGBA(startSnapshot.style[styleAttribute]);
-        const targetColor = parseRGBA(targetSnapshot.style[styleAttribute]);
-        
-        let calculatedColor = {};
+        try{
+            const startColor = parseRGBA(startSnapshot.style[styleAttribute]);
+            const targetColor = parseRGBA(targetSnapshot.style[styleAttribute]);
+            
+            let calculatedColor = {};
 
-        for(let prop in startColor){
-            calculatedColor[prop] = valueFormula(startColor[prop], targetColor[prop]);
+            for(let prop in startColor){
+                calculatedColor[prop] = valueFormula(startColor[prop], targetColor[prop]);
+            }
+
+            snapshotTrack.style[styleAttribute] = element.style[styleAttribute] = `rgba(${calculatedColor.r},${calculatedColor.g},${calculatedColor.b},${calculatedColor.a})`;
         }
-
-        snapshotTrack.style[styleAttribute] = element.style[styleAttribute] = `rgba(${calculatedColor.r},${calculatedColor.g},${calculatedColor.b},${calculatedColor.a})`;
+        catch{
+            // do nothing because, this is because getComputedStyle is bugged in firefox in a way that some color values are just empty.
+            // this way some animation handlers wont work but handlers that comes after them will be called
+        }
+        
     }
 };
 
 
 export const StyleHandlers = {};
 
-['width', 'height', 'fontSize'].forEach((attr) => {
-    StyleHandlers[attr] = createSizeAttributeHandler(attr);
-});
+[
+    'width', 
+    'height', 
+    'fontSize',
+    'borderWidth',
+    ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Width`),
+    'padding',
+    ...['Right', 'Left', 'Top', 'Bottom'].map(side => `padding${side}`)
+].forEach((attr) => StyleHandlers[attr] = createSizeAttributeHandler(attr));
 
-['color', 'backgroundColor', 'borderColor', ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Color`)].forEach((attr) => {
-    StyleHandlers[attr] = createColorAttributeHandler(attr);
-});
+[
+    'color', 
+    'backgroundColor', 
+    'borderColor', 
+    ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Color`)
+].forEach((attr) => StyleHandlers[attr] = createColorAttributeHandler(attr));
 
 
 export const ClearTransformHandler = (element) => element.style.transform = '';
