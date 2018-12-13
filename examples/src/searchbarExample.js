@@ -32,11 +32,8 @@ class SingularSearch extends Component{
             singularPriority={singularPriority}
             onAnimationBegin={this.handleAnimationBegin}
             onAnimationComplete={this.handleAnimationComplete}
-            animationDuration={1000}
-            >
-            <Ref innerRef={this.handleRef}>
-                <Input icon="search" focus value={value} style={style} onChange={onChange} />
-            </Ref>
+            animationDuration={1000}>
+            <Input icon="search" focus value={value} style={style} onChange={onChange} />
         </SingularComponent>;
     }
 }
