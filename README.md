@@ -23,21 +23,11 @@ import SingularComponent from 'react-singular-component';
 
 class SingularSearch extends Component{
 
-    constructor(props){
-        super(props);
-    }
-
-    handleRef(element){
-        element.getElementsByTagName('input')[0].focus();
-    }
-
     render(){
         const {singularPriority, style, value, onChange} = this.props;
 
         return <SingularComponent singularKey="SingleInput" singularPriority={singularPriority}>
-            <Ref innerRef={this.handleRef}>
-                <Input icon="search" value={value} style={style} onChange={onChange} />
-            </Ref>
+            <Input icon="search" value={value} style={style} onChange={onChange} />
         </SingularComponent>;
     }
 }

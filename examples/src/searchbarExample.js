@@ -7,10 +7,6 @@ import SingularComponent from '../../src';
 
 class SingularSearch extends Component{
 
-    handleRef = (element) => {
-        element.getElementsByTagName('input')[0].focus();
-    }
-
     handleAnimationBegin = (originalElement, animationElement) => {
         let input = animationElement.getElementsByTagName('input')[0];
         input.selectionEnd = input.selectionStart = input.value.length;
@@ -19,7 +15,7 @@ class SingularSearch extends Component{
     }
 
     handleAnimationComplete = (originalElement) => {
-        this.handleRef(originalElement);
+        originalElement.getElementsByTagName('input')[0].focus();
     }
 
 
@@ -32,11 +28,8 @@ class SingularSearch extends Component{
             singularPriority={singularPriority}
             onAnimationBegin={this.handleAnimationBegin}
             onAnimationComplete={this.handleAnimationComplete}
-            animationDuration={1000}
-            >
-            <Ref innerRef={this.handleRef}>
-                <Input icon="search" focus value={value} style={style} onChange={onChange} />
-            </Ref>
+            animationDuration={1000}>
+            <Input icon="search" focus value={value} style={style} onChange={onChange} />
         </SingularComponent>;
     }
 }
