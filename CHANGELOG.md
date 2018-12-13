@@ -1,3 +1,9 @@
+8.1.0:  
+- added native support for 'borderWidth', 'borderRightWidth', 'borderLeftWidth', 'borderTopWidth', 'borderBottomWidth', 'padding', 'paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom'.
+- fixed a problem that some color attributes that wont work because of browser support will not threw an error and stop the animations of following attributes (only heppened to me in firefox because of missing values in getComputedStyle()).
+
+---
+
 8.0.0:  
 - drop support of custom easing function as it seems unneeded.
 - easing prop now accepts only the name of the easing function instead of a function (you can see all the existing functions in the readme).
