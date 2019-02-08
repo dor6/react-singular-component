@@ -1,4 +1,7 @@
 # SingularComponent
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/dor6/react-singular-component.svg)](https://greenkeeper.io/)
+
 Move your react component around the dom
 ### Click [Here](https://dor6.github.io/react-singular-component/) For Live Example!!!!!!!!
 
