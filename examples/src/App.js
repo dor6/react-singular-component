@@ -7,6 +7,7 @@ import NotesExample from './notesExample';
 import SearchExample from'./searchbarExample';
 import ListExample from './listExample';
 import ColorExample from './colorExample';
+import TryExample from './tryExample';
 
 class App extends Component {   
 
@@ -17,7 +18,8 @@ class App extends Component {
                   { menuItem: 'Search Example', render: () => <SearchExample/>},
                   { menuItem: 'Notes Example', render: () => <NotesExample/> },
                   { menuItem: 'List Example', render: () => <ListExample/> },
-                  { menuItem: 'Color Example', render: () => <ColorExample/> }
+                  { menuItem: 'Color Example', render: () => <ColorExample/> },
+                  { menuItem: 'Try it!', render: () => <TryExample/> }
               ]} />
           </div>
         );
