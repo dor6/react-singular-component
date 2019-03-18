@@ -1,7 +1,8 @@
 import React from 'react';
 import SingularComponent from '../../src';
 import Playground from 'component-playground';
-
+import "./stylesheets/component-playground/codemirror.min.css";
+import "./stylesheets/component-playground/monokai.min.css";
 export default class TryExample extends React.Component{
     render(){
         return <div>
