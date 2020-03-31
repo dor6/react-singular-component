@@ -1,72 +1,64 @@
-import React, { Component } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {Grid, Header, Segment, Button, Container} from 'semantic-ui-react';
 
 import SingularComponent from '../../src';
 
-
-class ListItem extends Component{
-
-    handleAnimationBegin = (originalElement, animationElement) => {
-        animationElement.getElementsByClassName('button')[0].addEventListener('click', this.removeItem);
-    }
-
-    removeItem = () => {
-        const {itemId, removeItem} = this.props;
+function ListItem({removeItem, index, itemId}){
+    const removeThisItem = useCallback(() => {
         removeItem(itemId);
-    }
+    }, [removeItem, itemId]);
 
-    render(){
-        const {itemId, index} = this.props;
-
-        return <SingularComponent 
+    const handleAnimationBegin = useCallback((originalElement, animationElement) => {
+        animationElement.getElementsByClassName('button')[0].addEventListener('click', removeThisItem);
+    }, [removeThisItem]);
+    
+    return (
+        <SingularComponent 
             animationTrigger={index}
             singularKey={`ListItem-${itemId}`} 
-            singularPriority={1} onAnimationBegin={this.handleAnimationBegin}>
+            singularPriority={1} onAnimationBegin={handleAnimationBegin}>
             <Segment clearing textAlign='left'>
                 {itemId}
-                <Button basic circular floated='right' icon='delete' onClick={this.removeItem}/>
+                <Button basic circular floated='right' icon='delete' onClick={removeThisItem}/>
             </Segment>
-        </SingularComponent>;
-    }
+        </SingularComponent>
+    );
 }
-
 
 let itemsCounter = 0;
 
 const getNextItemId = () => itemsCounter++;
 
-export default class ListExample extends React.Component{
+export default function ListExample(){
 
-    state = { items: [] };
+    const [items, setItems] = useState([]);
 
-    addItem = () => {
-        this.setState({items: [getNextItemId(), ...this.state.items]});
+    const addItem = () => {
+        setItems([getNextItemId(), ...items]);
+    };
+
+    const removeItem = (itemId) => {
+        items.splice(items.indexOf(itemId), 1);
+        setItems([...items]);
     }
 
-    removeItem = (itemId) => {
-        let nextItems = this.state.items;
-        nextItems.splice(nextItems.indexOf(itemId), 1);
-        this.setState({items: nextItems});
-    }
-
-    render(){
-        return <Container>
+    
+    return (
+        <Container>
             <Grid padded>
                 <Grid.Row>
                     <Grid.Column>
-                        <Header size="huge">Coolest List Ever!!! <Button floated='right' onClick={this.addItem}>Add Item</Button></Header>
+                        <Header size="huge">Coolest List Ever!!! <Button floated='right' onClick={addItem}>Add Item</Button></Header>
                         
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column>
-                        {this.state.items.map((itemId, index) => <ListItem key={itemId} itemId={itemId} index={index} removeItem={this.removeItem} />)}
+                        {items.map((itemId, index) => <ListItem key={itemId} itemId={itemId} index={index} removeItem={removeItem} />)}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </Container>;
-    }
-
-    
-}
+        </Container>
+    );
+};
