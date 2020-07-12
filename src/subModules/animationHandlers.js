@@ -4,8 +4,7 @@ const createSizeAttributeHandler = (styleAttribute, suffix = 'px') => {
     return (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => {
         const value = valueFormula(parseInt(startSnapshot.style[styleAttribute]), parseInt(targetSnapshot.style[styleAttribute]));
         snapshotTrack.style[styleAttribute] = element.style[styleAttribute] = `${value}${suffix}`;
-        
-    }
+    };
 };  
 
 const createColorAttributeHandler = (styleAttribute) => {
@@ -27,7 +26,12 @@ const createColorAttributeHandler = (styleAttribute) => {
             // this way some animation handlers wont work but handlers that comes after them will be called
         }
         
-    }
+    };
+};
+
+const calcualteOpacity = (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => {
+    const value = valueFormula(parseFloat(startSnapshot.style['opacity']), parseFloat(targetSnapshot.style['opacity']));
+    snapshotTrack.style['opacity'] = element.style['opacity'] = value;
 };
 
 
@@ -50,6 +54,7 @@ export const StyleHandlers = {};
     ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Color`)
 ].forEach((attr) => StyleHandlers[attr] = createColorAttributeHandler(attr));
 
+StyleHandlers['opacity'] = calcualteOpacity;
 
 export const ClearTransformHandler = (element) => element.style.transform = '';
 
