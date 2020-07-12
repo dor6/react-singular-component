@@ -1,3 +1,8 @@
+8.1.2:  
+- added opacity support
+
+---
+
 8.1.1:  
 - update packages
 - changed the list example to use hooks
