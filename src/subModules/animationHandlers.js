@@ -29,7 +29,7 @@ const createColorAttributeHandler = (styleAttribute) => {
     };
 };
 
-const calcualteOpacity = (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => {
+const calculateOpacity = (element, valueFormula, startSnapshot, targetSnapshot, snapshotTrack) => {
     const value = valueFormula(parseFloat(startSnapshot.style['opacity']), parseFloat(targetSnapshot.style['opacity']));
     snapshotTrack.style['opacity'] = element.style['opacity'] = value;
 };
@@ -54,7 +54,7 @@ export const StyleHandlers = {};
     ...['Right', 'Left', 'Top', 'Bottom'].map(side => `border${side}Color`)
 ].forEach((attr) => StyleHandlers[attr] = createColorAttributeHandler(attr));
 
-StyleHandlers['opacity'] = calcualteOpacity;
+StyleHandlers['opacity'] = calculateOpacity;
 
 export const ClearTransformHandler = (element) => element.style.transform = '';
 
