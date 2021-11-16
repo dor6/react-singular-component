@@ -1,5 +1,10 @@
+8.1.5:  
+- added typescript support
+
+---
+
 8.1.4:  
-- react 17 support
+- added react 17 support
 
 ---
 
