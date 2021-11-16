@@ -1,3 +1,8 @@
+8.1.4:  
+- react 17 support
+
+---
+
 8.1.3:  
 - added opacity support
 
